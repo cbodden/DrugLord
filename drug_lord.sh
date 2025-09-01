@@ -34,7 +34,7 @@ main() {
         print_inventory
         show_menu
 
-                read -p "Choose option (1-9): " choice
+        read -p "Choose option (1-9): " choice
 
         case $choice in
             1)

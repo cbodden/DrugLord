@@ -9,7 +9,8 @@ update_prices() {
         local city_multiplier=${city_price_multipliers[${CURRENT_CITY}]}
 
         # Calculate city-adjusted base price
-        local city_base_price=$(echo "scale=0; ${base_price} * ${city_multiplier}" | bc -l)
+        local city_base_price=$( \
+            echo "scale=0; ${base_price} * ${city_multiplier}" | bc -l)
         city_base_price=${city_base_price%.*}
 
         # Calculate change based on volatility
@@ -17,7 +18,8 @@ update_prices() {
         local change=$((RANDOM % (max_change + 1) - volatility))
 
         # Add some market pressure (prices tend to return to city base)
-        local market_pressure=$(( (city_base_price - drug_prices[$drug]) / 10 ))
+        local market_pressure=$(( \
+            (city_base_price - drug_prices[$drug]) / 10 ))
         change=$((change + market_pressure))
 
         local new_price=$((${drug_prices[$drug]} + change))
@@ -26,9 +28,11 @@ update_prices() {
         local min_price=$((city_base_price / 2))
         local max_price=$((city_base_price * 3))
 
-        if [ $new_price -lt $min_price ]; then
+        if [ $new_price -lt $min_price ]
+        then
             new_price=$min_price
-        elif [ $new_price -gt $max_price ]; then
+        elif [ $new_price -gt $max_price ]
+        then
             new_price=$max_price
         fi
 
@@ -48,9 +52,11 @@ fluctuate_prices() {
         local min_price=$((base_price / 2))
         local max_price=$((base_price * 3))
 
-        if [ $new_price -lt $min_price ]; then
+        if [ $new_price -lt $min_price ]
+        then
             new_price=$min_price
-        elif [ $new_price -gt $max_price ]; then
+        elif [ $new_price -gt $max_price ]
+        then
             new_price=$max_price
         fi
 
@@ -63,27 +69,30 @@ fluctuate_travel_costs() {
     for city in "${!city_travel_costs[@]}"; do
         local volatility=${travel_cost_volatility[$city]}
         local base_cost=${base_travel_costs[$city]}
-        
+
         # Calculate change based on volatility
         local max_change=$((volatility * 2))
         local change=$((RANDOM % (max_change + 1) - volatility))
-        
+
         # Add some market pressure (costs tend to return to base)
-        local market_pressure=$(( (base_cost - city_travel_costs[$city]) / 8 ))
+        local market_pressure=$(( \
+            (base_cost - city_travel_costs[$city]) / 8 ))
         change=$((change + market_pressure))
-        
+
         local new_cost=$((${city_travel_costs[$city]} + change))
-        
+
         # Keep costs within reasonable bounds (50% to 200% of base cost)
         local min_cost=$((base_cost / 2))
         local max_cost=$((base_cost * 2))
-        
-        if [ $new_cost -lt $min_cost ]; then
+
+        if [ $new_cost -lt $min_cost ]
+        then
             new_cost=$min_cost
-        elif [ $new_cost -gt $max_cost ]; then
+        elif [ $new_cost -gt $max_cost ]
+        then
             new_cost=$max_cost
         fi
-        
+
         city_travel_costs[$city]=$new_cost
     done
 }
@@ -92,7 +101,8 @@ buy_drug() {
     local DRUG=$1
     local QUANTITY=$2
 
-    if [ -z "${drug_prices[${DRUG}]}" ]; then
+    if [ -z "${drug_prices[${DRUG}]}" ]
+    then
         red "Invalid drug!"
         return 1
     fi
@@ -100,7 +110,8 @@ buy_drug() {
     local PRICE_PER_UNIT=${drug_prices[${DRUG}]}
     local COST=$((${PRICE_PER_UNIT} * ${QUANTITY}))
 
-    if [ ${MONEY} -lt ${COST} ]; then
+    if [ ${MONEY} -lt ${COST} ]
+    then
         red "Not enough money! You need \$${COST} but only have ${MONEY}"
         return 1
     fi
@@ -116,7 +127,8 @@ sell_drug() {
     local DRUG=$1
     local QUANTITY=$2
 
-    if [ -z "${drugs[${DRUG}]}" ] || [ "${drugs[${DRUG}]}" -lt ${QUANTITY} ]; then
+    if [ -z "${drugs[${DRUG}]}" ] || [ "${drugs[${DRUG}]}" -lt ${QUANTITY} ]
+    then
         red "Not enough ${drug_names[${DRUG}]} in inventory!"
         return 1
     fi
@@ -124,7 +136,8 @@ sell_drug() {
     local PRICE=$((${drug_prices[${DRUG}]} * ${QUANTITY}))
     local PROFIT=$((${PRICE} + (RANDOM % 20 - 10)))  # Random profit/loss
 
-    if [ ${PROFIT} -lt 0 ]; then
+    if [ ${PROFIT} -lt 0 ]
+    then
         PROFIT=0
     fi
 
@@ -136,21 +149,24 @@ sell_drug() {
 }
 
 police_encounter() {
-    if [ ${POLICE_HEAT} -gt 20 ] && [ $((RANDOM % 100)) -lt 30 ]; then
+    if [ ${POLICE_HEAT} -gt 20 ] && [ $((RANDOM % 100)) -lt 30 ]
+    then
         echo
         red "🚔 POLICE RAID! 🚔"
         echo
 
         local CONFISCATED=0
         for drug in "${!drugs[@]}"; do
-            if [ "${drugs[${drug}]}" -gt 0 ]; then
+            if [ "${drugs[${drug}]}" -gt 0 ]
+            then
                 local LOSS=$((RANDOM % (drugs[${drug}] / 2 + 1)))
                 drugs[${drug}]=$((${drugs[${drug}]} - ${LOSS}))
                 CONFISCATED=$((${CONFISCATED} + ${LOSS}))
             fi
         done
 
-        if [ ${CONFISCATED} -gt 0 ]; then
+        if [ ${CONFISCATED} -gt 0 ]
+        then
             red "Police confiscated ${CONFISCATED} units of drugs!"
             HEALTH=$((${HEALTH} - 20))
             POLICE_HEAT=0
@@ -174,14 +190,16 @@ random_event() {
             ;;
         1)
             local LOSS=$((RANDOM % 200 + 50))
-            if [ ${MONEY} -ge ${LOSS} ]; then
+            if [ ${MONEY} -ge ${LOSS} ]
+            then
                 MONEY=$((${MONEY} - ${LOSS}))
                 red "💸 Got robbed! Lost \$${LOSS}"
             fi
             ;;
         2)
             HEALTH=$((${HEALTH} + 10))
-            if [ ${HEALTH} -gt 100 ]; then
+            if [ ${HEALTH} -gt 100 ]
+            then
                 HEALTH=100
             fi
             green "❤️  Feeling better! Health +10"
@@ -191,9 +209,11 @@ random_event() {
             red "💳 Loan shark demands payment! Debt +\$200"
             ;;
         4)
-            if [ ${DEBT} -gt 0 ]; then
+            if [ ${DEBT} -gt 0 ]
+            then
                 local PAYMENT=$((RANDOM % 100 + 50))
-                if [ ${PAYMENT} -gt ${DEBT} ]; then
+                if [ ${PAYMENT} -gt ${DEBT} ]
+                then
                     PAYMENT=${DEBT}
                 fi
                 DEBT=$((${DEBT} - ${PAYMENT}))
@@ -205,19 +225,22 @@ random_event() {
 }
 
 check_game_over() {
-    if [ ${HEALTH} -le 0 ]; then
+    if [ ${HEALTH} -le 0 ]
+    then
         red "💀 GAME OVER! You died from poor health!"
         GAME_OVER=true
         return
     fi
 
-    if [ ${DEBT} -gt 5000 ]; then
+    if [ ${DEBT} -gt 5000 ]
+    then
         red "💀 GAME OVER! Loan sharks got you!"
         GAME_OVER=true
         return
     fi
 
-    if [ ${MONEY} -lt 0 ] && $((${MONEY} + ${DEBT})) -lt -1000 ]; then
+    if [ ${MONEY} -lt 0 ] && $((${MONEY} + ${DEBT})) -lt -1000 ]
+    then
         red "💀 GAME OVER! You're completely broke!"
         GAME_OVER=true
         return
@@ -234,19 +257,22 @@ next_day() {
     local EXPENSES=$((RANDOM % 50 + 20))
     MONEY=$((${MONEY} - ${EXPENSES}))
 
-    if [ ${MONEY} -lt 0 ]; then
+    if [ ${MONEY} -lt 0 ]
+    then
         DEBT=$((${DEBT} - ${MONEY}))
         MONEY=0
     fi
 
     # Reduce police heat over time
-    if [ ${POLICE_HEAT} -gt 0 ]; then
+    if [ ${POLICE_HEAT} -gt 0 ]
+    then
         POLICE_HEAT=$((${POLICE_HEAT} - 1))
     fi
 
     # Health slowly decreases
     HEALTH=$((${HEALTH} - 1))
-    if [ ${HEALTH} -lt 0 ]; then
+    if [ ${HEALTH} -lt 0 ]
+    then
         HEALTH=0
     fi
 }

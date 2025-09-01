@@ -69,30 +69,67 @@ buy_menu() {
 }
 
 sell_menu() {
-    printf "%s\n" "$(bold "💰 SELL DRUGS:")"
+    printf "%s\n" \
+    "$(bold "💰 SELL DRUGS:")" \
+    "$(dim "💹 Current sale prices (base price + random profit/loss):")" ""
+
+    # Show current sale prices for all drugs
+    printf "%-3s %-15s %-12s %-12s %-10s\n" "No." "Drug" "Sale Price" "Trend" "Available"
+    printf "%-3s %-15s %-12s %-12s %-10s\n" "---" "----" "----------" "-----" "---------"
+
     local i=1
     local drug_list=()
 
     for drug in "${!drugs[@]}"; do
+        local current_price=${drug_prices[$drug]}
+        local trend=""
+        
+        # Add price trend indicator (similar to buy menu)
+        if [ $current_price -gt ${base_prices[$drug]} ]; then
+            trend="$(red "📈 High")"
+        elif [ $current_price -lt ${base_prices[$drug]} ]; then
+            trend="$(green "📉 Low")"
+        else
+            trend="$(yellow "➡️ Avg")"
+        fi
+        
+        local available="${drugs[$drug]}"
+        if [ $available -eq 0 ]; then
+            available="$(dim "0")"
+        fi
+        
+        printf "%-3s %-15s %-12s %-12s %-10s\n" \
+            "${i}." "${drug_names[$drug]}" "\$${current_price}" "${trend}" "${available}"
+        drug_list+=("$drug")
+        i=$((i + 1))
+    done
+
+    echo
+    printf "%s\n" "$(bold "Available for sale:")" ""
+
+    local sell_i=1
+    local sell_drug_list=()
+
+    for drug in "${!drugs[@]}"; do
         if [ "${drugs[$drug]}" -gt 0 ]; then
             printf "%s\n" \
-                "$i. ${drug_names[$drug]} - ${drugs[$drug]} units available"
-            drug_list+=("$drug")
-            i=$((i + 1))
+                "$sell_i. ${drug_names[$drug]} - ${drugs[$drug]} units available"
+            sell_drug_list+=("$drug")
+            sell_i=$((sell_i + 1))
         fi
     done
 
-    if [ $i -eq 1 ]; then
+    if [ $sell_i -eq 1 ]; then
         red "No drugs to sell!"
         return
     fi
 
-    printf "%s\n" "$i. Back to main menu" ""
+    printf "%s\n" "$sell_i. Back to main menu" ""
 
-    read -p "Choose drug (1-$i): " choice
+    read -p "Choose drug (1-$sell_i): " choice
 
-    if [ "$choice" -ge 1 ] && [ "$choice" -lt $i ]; then
-        local selected_drug=${drug_list[$((choice - 1))]}
+    if [ "$choice" -ge 1 ] && [ "$choice" -lt $sell_i ]; then
+        local selected_drug=${sell_drug_list[$((choice - 1))]}
         read -p "How many units? " quantity
 
         if [[ "$quantity" =~ ^[0-9]+$ ]] && [ "$quantity" -gt 0 ]; then
