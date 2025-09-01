@@ -1,6 +1,6 @@
-# Drug_Lord.sh
+# DrugLord.sh
 
-![drug_lord](images/drug_lord.png)
+![DrugLord](images/druglord.png)
 
 ## Overview
 This is an attempt to make a version reminiscent of the original DrugLord.exe
@@ -10,8 +10,8 @@ This version is written as a bash script trying to stick to only GNU coreutils.
 ## File Structure
 
 ```
-drug_lord/
-├── drug_lord.sh              # Main game script
+druglord/
+├── druglord.sh              # Main game script
 ├── README.md                 # This documentation
 └── lib/                      # Library directory
     ├── colors.sh             # Color functions and ANSI escape codes
@@ -64,7 +64,7 @@ drug_lord/
 
 Run the game with:
 ```bash
-./drug_lord.sh
+./druglord.sh
 ```
 
 ## Benefits of Modular Structure

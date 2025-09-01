@@ -30,13 +30,13 @@ save_game() {
         for city in "${!travel_cost_volatility[@]}"; do
             echo "travel_cost_volatility[${city}]=${travel_cost_volatility[${city}]}"
         done
-    } > drug_lord_save.txt
+    } > druglord_save.txt
     
     green "Game saved!"
 }
 
 load_game() {
-    if [ -f "drug_lord_save.txt" ]; then
+    if [ -f "druglord_save.txt" ]; then
         source drug_lord_save.txt
         green "Game loaded!"
     else
