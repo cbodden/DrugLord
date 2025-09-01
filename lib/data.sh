@@ -48,7 +48,7 @@ declare -A cities=(
     ["chicago"]="🏢 Chicago"
     ["miami"]="🌊 Miami"
     ["lasvegas"]="🎰 Las Vegas"
-    ["seattle"]="⛴️ Seattle"
+    ["seattle"]="🚠 Seattle"
     ["boston"]="🎓 Boston"
     ["denver"]="🚠 Denver"
 )

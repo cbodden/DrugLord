@@ -110,8 +110,8 @@ travel_menu() {
         "Available cities:" ""
 
     # Create columnar format
-    printf "%-3s %-18s %-12s %-15s\n" "No." "City" "Travel Cost" "Price Level"
-    printf "%-3s %-18s %-12s %-15s\n" "---" "----" "-----------" "-----------"
+    printf "%-3s %-16s %-12s %-15s\n" "No." "City" "Travel Cost" "Price Level"
+    printf "%-3s %-16s %-12s %-15s\n" "---" "----" "-----------" "-----------"
 
     local i=1
     local city_list=()
