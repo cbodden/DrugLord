@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Drug Lord Game - A terminal-based drug dealing simulation
-# Uses only GNU tools and bash built-ins with colored output
-
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
