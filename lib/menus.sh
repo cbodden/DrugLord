@@ -74,8 +74,8 @@ sell_menu() {
     "$(dim "💹 Current sale prices (base price + random profit/loss):")" ""
 
     # Show current sale prices for all drugs
-    printf "%-3s %-15s %-12s %-12s %-10s\n" "No." "Drug" "Sale Price" "Trend" "Available"
-    printf "%-3s %-15s %-12s %-12s %-10s\n" "---" "----" "----------" "-----" "---------"
+    printf "%-3s %-13s %-12s %-8s %-10s\n" "No." "Drug" "Sale Price" "Trend" "Available"
+    printf "%-3s %-13s %-12s %-8s %-10s\n" "---" "----" "----------" "-----" "---------"
 
     local i=1
     local drug_list=()
@@ -83,7 +83,7 @@ sell_menu() {
     for drug in "${!drugs[@]}"; do
         local current_price=${drug_prices[$drug]}
         local trend=""
-        
+
         # Add price trend indicator (similar to buy menu)
         if [ $current_price -gt ${base_prices[$drug]} ]; then
             trend="$(red "📈 High")"
@@ -92,14 +92,15 @@ sell_menu() {
         else
             trend="$(yellow "➡️ Avg")"
         fi
-        
+
         local available="${drugs[$drug]}"
-        if [ $available -eq 0 ]; then
-            available="$(dim "0")"
-        fi
-        
-        printf "%-3s %-15s %-12s %-12s %-10s\n" \
-            "${i}." "${drug_names[$drug]}" "\$${current_price}" "${trend}" "${available}"
+        #if [ $available -eq 0 ]; then
+        #    available="$(dim "0")"
+        #fi
+
+        printf "%-3s %-15s %-12s %-8s %-10s\n" \
+            "${i}." "${drug_names[$drug]}" "\$${current_price}" "${available}" "${trend}"
+            ##"${i}." "${drug_names[$drug]}" "\$${current_price}" "${trend}" "${available}"
         drug_list+=("$drug")
         i=$((i + 1))
     done
@@ -143,7 +144,7 @@ sell_menu() {
 travel_menu() {
     # Fluctuate travel costs each time you view the menu
     fluctuate_travel_costs
-    
+
     printf "%s\n" \
         "$(bold "✈️ TRAVEL TO ANOTHER CITY:")" \
         "$(dim "Current location: ${cities[${CURRENT_CITY}]}")" \
