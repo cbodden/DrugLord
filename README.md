@@ -1,7 +1,9 @@
-# Drug Lord Game - Modular Structure
+# Drug_Lord.sh
 
 ## Overview
-The Drug Lord game has been refactored into a clean, modular structure using a `lib/` (library) approach for better maintainability and organization.
+This is an attempt to make a version reminiscent of the original DrugLord.exe
+that was written by Phil Erwin (FantasyWare Inc 1991-93).
+This version is written as a bash script trying to stick to only GNU coreutils.
 
 ## File Structure
 
