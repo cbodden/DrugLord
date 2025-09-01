@@ -56,7 +56,7 @@ drug_lord/
 - Screen clearing and header display
 - Stats and inventory display functions
 - City initialization and price calculations
-- Market price display
+- Enhanced market price display with columnar format and trend indicators
 
 ## Usage
 
