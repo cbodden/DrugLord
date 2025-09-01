@@ -117,3 +117,9 @@ The game now features dynamic travel costs that fluctuate in real-time, similar 
 - Costs update dynamically when accessing the travel menu
 - Visual indicator shows "✈️ Travel costs fluctuate in real-time!"
 - All travel cost data is saved and loaded with your game progress
+
+## Planned Features / Updates
+- Multiple save files
+- Guns for fights
+- Pockets / Bags for holding more (planned as a random event)
+- .....And more
