@@ -31,11 +31,13 @@ drug_lord/
 - Game state variables (MONEY, DEBT, DAY, etc.)
 - Drug arrays (names, prices, volatility, inventory)
 - City system data (names, price multipliers, travel costs)
+- Travel cost volatility and base cost arrays
 - Initial game state setup
 
 ### `game.sh`
 - Core game mechanics (buy_drug, sell_drug)
-- Price fluctuation algorithms
+- Price fluctuation algorithms (drugs and travel costs)
+- Travel cost fluctuation system with volatility
 - Police encounters and random events
 - Game over conditions and day progression
 
@@ -43,12 +45,12 @@ drug_lord/
 - Main menu display
 - Buy drugs menu with price indicators
 - Sell drugs menu
-- Travel menu with city selection
+- Travel menu with city selection and fluctuating costs
 
 ### `save.sh`
 - Save game state to file
 - Load game state from file
-- Handles all game variables and arrays
+- Handles all game variables and arrays (including travel cost data)
 
 ### `utils.sh`
 - Screen clearing and header display
@@ -82,8 +84,34 @@ Run the game with:
 ## Features
 
 - 🏙️ **8 Major Cities** with different price multipliers
-- ✈️ **Travel System** with costs and price adjustments
-- 💹 **Dynamic Price Fluctuation** based on city and volatility
+- ✈️ **Travel System** with fluctuating costs and price adjustments
+- 💹 **Dynamic Price Fluctuation** for both drugs and travel costs
+- 🎯 **Volatility-Based Travel Costs** (longer distances = higher volatility)
 - 🚔 **Police Encounters** and random events
 - 💾 **Save/Load System** for persistent gameplay
 - 🎨 **Colored Terminal Output** for enhanced visual experience
+
+## Travel Cost Fluctuation System
+
+The game now features dynamic travel costs that fluctuate in real-time, similar to drug prices:
+
+### **Volatility Levels by City:**
+- **Seattle**: 25 (Very High) - Longest distance, most price swings
+- **Los Angeles**: 20 (High) - Longer distance, significant fluctuations  
+- **Las Vegas**: 18 (Medium-High) - Moderate distance, notable changes
+- **New York, Denver**: 15 (Medium) - Average volatility
+- **Miami**: 12 (Low-Medium) - Shorter distance, smaller changes
+- **Chicago**: 10 (Low) - Close distance, stable prices
+- **Boston**: 8 (Very Low) - Shortest distance, most stable
+
+### **How It Works:**
+- Travel costs fluctuate each time you view the travel menu
+- Costs are bounded between 50%-200% of their base values
+- Market pressure helps costs return toward base values over time
+- Longer distance cities have higher volatility and more dramatic price changes
+- The system adds strategic depth to travel planning and timing
+
+### **Real-Time Updates:**
+- Costs update dynamically when accessing the travel menu
+- Visual indicator shows "✈️ Travel costs fluctuate in real-time!"
+- All travel cost data is saved and loaded with your game progress
