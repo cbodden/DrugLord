@@ -1,5 +1,7 @@
 # Drug_Lord.sh
 
+![drug_lord](images/drug_lord.png)
+
 ## Overview
 This is an attempt to make a version reminiscent of the original DrugLord.exe
 that was written by Phil Erwin (FantasyWare Inc 1991-93).
