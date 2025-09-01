@@ -10,7 +10,6 @@ This version is written as a bash script trying to stick to only GNU coreutils.
 ```
 drug_lord/
 ├── drug_lord.sh              # Main game script
-├── drug_lord_original.sh     # Original monolithic script (kept for reference)
 ├── README.md                 # This documentation
 └── lib/                      # Library directory
     ├── colors.sh             # Color functions and ANSI escape codes
