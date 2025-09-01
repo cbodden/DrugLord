@@ -1,26 +1,26 @@
 #!/bin/bash
 
 show_menu() {
-    echo "$(bold "🎮 MAIN MENU:")"
-    echo "1. 📊 View Stats & Inventory"
-    echo "2. 🏪 View Market Prices"
-    echo "3. 🛒 Buy Drugs"
-    echo "4. 💰 Sell Drugs"
-    echo "5. ✈️ Travel to Another City"
-    echo "6. ⏰ Next Day"
-    echo "7. 💾 Save Game"
-    echo "8. 📁 Load Game"
-    echo "9. ❌ Quit"
-    echo
+    printf "%s\n" \
+    "$(bold "🎮 MAIN MENU:")" \
+    "1. 📊 View Stats & Inventory" \
+    "2. 🏪 View Market Prices" \
+    "3. 🛒 Buy Drugs" \
+    "4. 💰 Sell Drugs" \
+    "5. ✈️ Travel to Another City" \
+    "6. ⏰ Next Day" \
+    "7. 💾 Save Game" \
+    "8. 📁 Load Game" \
+    "9. ❌ Quit" ""
 }
 
 buy_menu() {
     # Fluctuate prices each time you view the menu
     fluctuate_prices
 
-    echo "$(bold "🛒 BUY DRUGS:")"
-    echo "$(dim "💹 Prices fluctuate in real-time!")"
-    echo
+    printf "%s\n" \
+    "$(bold "🛒 BUY DRUGS:")" \
+    "$(dim "💹 Prices fluctuate in real-time!")" ""
 
     # Create columnar format
     printf "%-3s %-13s %-12s %-8s\n" "No." "Drug" "Price/Unit" "Trend"
@@ -52,9 +52,7 @@ buy_menu() {
         i=$((${i} + 1))
     done
 
-    echo
-    echo "${i}. Back to main menu"
-    echo
+    printf "%s\n" "" "${i}. Back to main menu" ""
 
     read -p "Choose drug (1-${i}): " choice
 
@@ -71,13 +69,14 @@ buy_menu() {
 }
 
 sell_menu() {
-    echo "$(bold "💰 SELL DRUGS:")"
+    printf "%s\n" "$(bold "💰 SELL DRUGS:")"
     local i=1
     local drug_list=()
 
     for drug in "${!drugs[@]}"; do
         if [ "${drugs[$drug]}" -gt 0 ]; then
-            echo "$i. ${drug_names[$drug]} - ${drugs[$drug]} units available"
+            printf "%s\n" \
+                "$i. ${drug_names[$drug]} - ${drugs[$drug]} units available"
             drug_list+=("$drug")
             i=$((i + 1))
         fi
@@ -88,8 +87,7 @@ sell_menu() {
         return
     fi
 
-    echo "$i. Back to main menu"
-    echo
+    printf "%s\n" "$i. Back to main menu" ""
 
     read -p "Choose drug (1-$i): " choice
 
@@ -106,10 +104,10 @@ sell_menu() {
 }
 
 travel_menu() {
-    echo "$(bold "✈️ TRAVEL TO ANOTHER CITY:")"
-    echo "$(dim "Current location: ${cities[${CURRENT_CITY}]}")"
-    echo
-    echo "Available cities:"
+    printf "%s\n" \
+        "$(bold "✈️ TRAVEL TO ANOTHER CITY:")" \
+        "$(dim "Current location: ${cities[${CURRENT_CITY}]}")" "" \
+        "Available cities:"
 
     local i=1
     local city_list=()
