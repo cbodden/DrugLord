@@ -55,9 +55,34 @@ print_inventory() {
 }
 
 print_market() {
-    echo "$(bold "🏪 DRUG MARKET:")"
+    printf "%s\n" \
+    "$(bold "🏪 DRUG MARKET:")" \
+    "$(dim "💹 Current market prices in ${cities[${CURRENT_CITY}]}:")" ""
+
+    # Create columnar format
+    printf "%-3s %-13s %-12s %-10s %-15s\n" "No." "Drug" "Price/Unit" "Base Price" "Trend"
+    printf "%-3s %-13s %-12s %-10s %-15s\n" "---" "----" "----------" "----------" "-----"
+
+    local i=1
     for drug in "${!drug_prices[@]}"; do
-        echo "  ${drug_names[$drug]}: $(yellow "${drug_prices[$drug]}") per unit"
+        local current_price=${drug_prices[$drug]}
+        local base_price=${base_prices[$drug]}
+        local trend=""
+
+        # Add price trend indicator
+        if [ $current_price -gt $base_price ]; then
+            trend="$(red "📈 High")"
+        elif [ $current_price -lt $base_price ]; then
+            trend="$(green "📉 Low")"
+        else
+            trend="$(yellow "➡️ Avg")"
+        fi
+
+        printf "%-3s %-15s %-12s %-10s %-15s\n" \
+            "${i}." "${drug_names[$drug]}" "\$${current_price}" "\$${base_price}" "${trend}"
+        i=$((i + 1))
     done
+
     echo
+    printf "%s\n" "$(dim "💡 Prices fluctuate based on city multipliers and market volatility")" ""
 }

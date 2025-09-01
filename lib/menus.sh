@@ -74,8 +74,8 @@ sell_menu() {
     "$(dim "💹 Current sale prices (base price + random profit/loss):")" ""
 
     # Show current sale prices for all drugs
-    printf "%-3s %-13s %-12s %-8s %-10s\n" "No." "Drug" "Sale Price" "Trend" "Available"
-    printf "%-3s %-13s %-12s %-8s %-10s\n" "---" "----" "----------" "-----" "---------"
+    printf "%-3s %-11s %-12s %-8s %-10s\n" "No." "Drug" "Sale Price" "Available" "Trend"
+    printf "%-3s %-11s %-12s %-8s %-10s\n" "---" "----" "----------" "---------" "-----"
 
     local i=1
     local drug_list=()
@@ -98,7 +98,7 @@ sell_menu() {
         #    available="$(dim "0")"
         #fi
 
-        printf "%-3s %-15s %-12s %-8s %-10s\n" \
+        printf "%-3s %-13s %-12s %-9s %-10s\n" \
             "${i}." "${drug_names[$drug]}" "\$${current_price}" "${available}" "${trend}"
             ##"${i}." "${drug_names[$drug]}" "\$${current_price}" "${trend}" "${available}"
         drug_list+=("$drug")
