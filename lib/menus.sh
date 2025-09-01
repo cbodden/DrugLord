@@ -2,16 +2,16 @@
 
 show_menu() {
     printf "%s\n" \
-    "$(bold "🎮 MAIN MENU:")" \
-    "1. 📊 View Stats & Inventory" \
-    "2. 🏪 View Market Prices" \
-    "3. 🛒 Buy Drugs" \
-    "4. 💰 Sell Drugs" \
-    "5. ✈️ Travel to Another City" \
-    "6. ⏰ Next Day" \
-    "7. 💾 Save Game" \
-    "8. 📁 Load Game" \
-    "9. ❌ Quit" ""
+        "$(bold "🎮 MAIN MENU:")" \
+        "1. 📊 View Stats & Inventory" \
+        "2. 🏪 View Market Prices" \
+        "3. 🛒 Buy Drugs" \
+        "4. 💰 Sell Drugs" \
+        "5. ✈️ Travel to Another City" \
+        "6. ⏰ Next Day" \
+        "7. 💾 Save Game" \
+        "8. 📁 Load Game" \
+        "9. ❌ Quit" ""
 }
 
 buy_menu() {
@@ -107,7 +107,11 @@ travel_menu() {
     printf "%s\n" \
         "$(bold "✈️ TRAVEL TO ANOTHER CITY:")" \
         "$(dim "Current location: ${cities[${CURRENT_CITY}]}")" "" \
-        "Available cities:"
+        "Available cities:" ""
+
+    # Create columnar format
+    printf "%-3s %-18s %-12s %-15s\n" "No." "City" "Travel Cost" "Price Level"
+    printf "%-3s %-18s %-12s %-15s\n" "---" "----" "-----------" "-----------"
 
     local i=1
     local city_list=()
@@ -127,12 +131,14 @@ travel_menu() {
                 price_indicator="$(yellow "➡️ Average")"
             fi
 
-            echo "${i}. ${cities[${city}]} - \$${travel_cost} travel cost ${price_indicator}"
+            printf "%-3s %-18s %-12s %-15s\n" \
+                "${i}." "${cities[${city}]}" "${travel_cost}" "${price_indicator}"
             city_list+=("${city}")
             i=$((${i} + 1))
         fi
     done
 
+    echo
     echo "${i}. Back to main menu"
     echo
 

@@ -45,12 +45,12 @@ declare -A drug_names=(
 declare -A cities=(
     ["newyork"]="🗽 New York"
     ["losangeles"]="🌴 Los Angeles"
-    ["chicago"]="🏙️ Chicago"
-    ["miami"]="🏖️ Miami"
+    ["chicago"]="🏢 Chicago"
+    ["miami"]="🌊 Miami"
     ["lasvegas"]="🎰 Las Vegas"
-    ["seattle"]="☕ Seattle"
+    ["seattle"]="⛴️ Seattle"
     ["boston"]="🎓 Boston"
-    ["denver"]="🏔️ Denver"
+    ["denver"]="🚠 Denver"
 )
 
 declare -A city_price_multipliers=(
