@@ -21,10 +21,15 @@ buy_menu() {
     echo "$(bold "🛒 BUY DRUGS:")"
     echo "$(dim "💹 Prices fluctuate in real-time!")"
     echo
+    
+    # Create columnar format
+    printf "%-3s %-13s %-12s %-8s\n" "No." "Drug" "Price/Unit" "Trend"
+    printf "%-3s %-13s %-12s %-8s\n" "---" "----" "----------" "-----"
+    
     local i=1
     local drug_list=()
 
-        for drug in "${!drug_prices[@]}"; do
+    for drug in "${!drug_prices[@]}"; do
         local CURRENT_PRICE=${drug_prices[${drug}]}
         local BASE_PRICE=${base_prices[${drug}]}
         local PRICE_INDICATOR=""
@@ -38,10 +43,16 @@ buy_menu() {
             PRICE_INDICATOR="$(yellow "➡️")"
         fi
         
-        echo "${i}. ${drug_names[${drug}]} - \$${CURRENT_PRICE} per unit ${PRICE_INDICATOR}"
+        printf "%-3s %-15s %-12s %-8s\n" \
+            "${i}." \
+            "${drug_names[${drug}]}" \
+            "${CURRENT_PRICE}" \
+            "${PRICE_INDICATOR}"
         drug_list+=("${drug}")
         i=$((${i} + 1))
     done
+    
+    echo
     echo "${i}. Back to main menu"
     echo
     

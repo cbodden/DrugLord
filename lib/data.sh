@@ -35,7 +35,7 @@ declare -A base_prices=(
 
 declare -A drug_names=(
     ["weed"]="🌿 Weed"
-    ["cocaine"]="❄️ Cocaine "
+    ["cocaine"]="💎 Cocaine"
     ["heroin"]="💉 Heroin"
     ["meth"]="🧪 Meth"
     ["ecstasy"]="💊 Ecstasy"
