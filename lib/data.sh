@@ -75,6 +75,28 @@ declare -A city_travel_costs=(
     ["denver"]="160"
 )
 
+declare -A base_travel_costs=(
+    ["newyork"]="150"
+    ["losangeles"]="200"
+    ["chicago"]="100"
+    ["miami"]="120"
+    ["lasvegas"]="180"
+    ["seattle"]="250"
+    ["boston"]="80"
+    ["denver"]="160"
+)
+
+declare -A travel_cost_volatility=(
+    ["newyork"]="15"      # Medium volatility
+    ["losangeles"]="20"   # High volatility (longer distance)
+    ["chicago"]="10"      # Low volatility
+    ["miami"]="12"        # Low-medium volatility
+    ["lasvegas"]="18"     # Medium-high volatility
+    ["seattle"]="25"      # Very high volatility (longest distance)
+    ["boston"]="8"        # Low volatility
+    ["denver"]="15"       # Medium volatility
+)
+
 # Initialize game state variables
 MONEY=1000
 DEBT=0

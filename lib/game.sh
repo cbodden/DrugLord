@@ -58,6 +58,36 @@ fluctuate_prices() {
     done
 }
 
+fluctuate_travel_costs() {
+    # Fluctuate travel costs based on volatility
+    for city in "${!city_travel_costs[@]}"; do
+        local volatility=${travel_cost_volatility[$city]}
+        local base_cost=${base_travel_costs[$city]}
+        
+        # Calculate change based on volatility
+        local max_change=$((volatility * 2))
+        local change=$((RANDOM % (max_change + 1) - volatility))
+        
+        # Add some market pressure (costs tend to return to base)
+        local market_pressure=$(( (base_cost - city_travel_costs[$city]) / 8 ))
+        change=$((change + market_pressure))
+        
+        local new_cost=$((${city_travel_costs[$city]} + change))
+        
+        # Keep costs within reasonable bounds (50% to 200% of base cost)
+        local min_cost=$((base_cost / 2))
+        local max_cost=$((base_cost * 2))
+        
+        if [ $new_cost -lt $min_cost ]; then
+            new_cost=$min_cost
+        elif [ $new_cost -gt $max_cost ]; then
+            new_cost=$max_cost
+        fi
+        
+        city_travel_costs[$city]=$new_cost
+    done
+}
+
 buy_drug() {
     local DRUG=$1
     local QUANTITY=$2

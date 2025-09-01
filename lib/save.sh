@@ -21,6 +21,15 @@ save_game() {
         for drug in "${!base_prices[@]}"; do
             echo "base_prices[${drug}]=${base_prices[${drug}]}"
         done
+        for city in "${!city_travel_costs[@]}"; do
+            echo "city_travel_costs[${city}]=${city_travel_costs[${city}]}"
+        done
+        for city in "${!base_travel_costs[@]}"; do
+            echo "base_travel_costs[${city}]=${base_travel_costs[${city}]}"
+        done
+        for city in "${!travel_cost_volatility[@]}"; do
+            echo "travel_cost_volatility[${city}]=${travel_cost_volatility[${city}]}"
+        done
     } > drug_lord_save.txt
     
     green "Game saved!"

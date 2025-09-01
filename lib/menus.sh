@@ -104,9 +104,13 @@ sell_menu() {
 }
 
 travel_menu() {
+    # Fluctuate travel costs each time you view the menu
+    fluctuate_travel_costs
+    
     printf "%s\n" \
         "$(bold "✈️ TRAVEL TO ANOTHER CITY:")" \
-        "$(dim "Current location: ${cities[${CURRENT_CITY}]}")" "" \
+        "$(dim "Current location: ${cities[${CURRENT_CITY}]}")" \
+        "$(dim "✈️ Travel costs fluctuate in real-time!")" "" \
         "Available cities:" ""
 
     # Create columnar format
