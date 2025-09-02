@@ -5,7 +5,7 @@ All notable changes to DrugLord will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.2] - 2024-12-19
+## [2.2] - 2025-09-02
 
 ### Security & Bug Fixes
 - 🔒 **Input Bounds Checking**: Added comprehensive limits for all user inputs
@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated save file format with security headers and checksums
 - Strengthened all arithmetic operations with overflow protection
 
-## [2.1] - 2024-12-19
+## [2.1] - 2025-09-01
 
 ### Added
 - 🏦 **Banking System**: Complete financial management with savings and loans
@@ -59,7 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated save system to include banking variables
 - Improved menu formatting to prevent staggering on double-digit options
 
-## [2.0] - 2024-12-19
+## [2.0] - 2025-09-01
 
 ### Added
 - 🏥 **Hospital System**: Complete healing system with dynamic pricing
@@ -79,7 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 💾 **Save Reliability**: Backup system prevents data loss
 - 🎨 **User Experience**: Enhanced visual feedback and menu organization
 
-## [1.0] - 2024-12-19
+## [1.0] - 2025-08-31
 
 ### Added
 - Initial release of DrugLord Terminal Edition
