@@ -95,16 +95,6 @@ Run the game with:
 10. 📁 Load Game
 11. ❌ Quit
 
-## Benefits of Modular Structure
-
-1. **Maintainability**: Each function is in its logical library
-2. **Readability**: Easier to find and modify specific functionality
-3. **Reusability**: Functions can be easily reused across different parts
-4. **Testing**: Individual libraries can be tested separately
-5. **Collaboration**: Multiple developers can work on different libraries
-6. **Documentation**: Each library has a clear, focused purpose
-7. **Standard Convention**: Uses the widely recognized `lib/` directory structure
-
 ## Dependencies
 
 - `bash` - Shell interpreter
