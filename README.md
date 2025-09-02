@@ -63,11 +63,12 @@ druglord/
 
 ### `random_events.sh`
 - Random events system that triggers when advancing to the next day
-- 8 different random events including warehouse fires, police raids, and personal drama
+- 9 different random events including warehouse fires, police raids, and personal drama
 - Price manipulation events that affect drug costs in current city
 - Financial events (found money, robbery, debt changes)
 - Health and reputation events
 - Personal events that affect inventory and relationships
+- Conditional events based on player stats (reputation, inventory)
 
 ### `utils.sh`
 - Screen clearing and header display
@@ -111,7 +112,7 @@ Run the game with:
 - 🚔 **Police Encounters** and random events
 - 🏥 **Hospital System** with dynamic healing costs and emergency fees
 - 🏦 **Banking System** with savings accounts and loans with daily interest
-- 🎲 **Random Events System** with 8 different events including warehouse incidents and personal drama
+- 🎲 **Random Events System** with 9 different events including warehouse incidents, personal drama, and reputation-based encounters
 - 💾 **Enhanced Save/Load System** with backup and integrity validation
 - 🎨 **Colored Terminal Output** for enhanced visual experience
 - ✅ **Comprehensive Input Validation** and error handling
@@ -173,6 +174,7 @@ The game features a comprehensive random events system that adds unpredictabilit
 - Events occur when you advance to the next day (option 8)
 - Each event has a ~5% chance of occurring (1 out of 20 possible outcomes)
 - Events are city-specific and can dramatically affect local drug prices
+- Some events have special conditions (e.g., snitch event requires reputation > 11)
 
 ### **Available Events:**
 
@@ -192,17 +194,30 @@ The game features a comprehensive random events system that adds unpredictabilit
 #### **Personal Events:**
 8. **💔 Girlfriend Weed Incident** - Your girlfriend destroys all your weed inventory
 
+#### **Reputation-Based Events:**
+9. **🚨 Snitch Event** - A snitch demands payment or threatens to go to police (requires reputation > 11)
+
 ### **Market Disruption Effects:**
 - **Price Multipliers**: 1.1x to 3.3x original price
 - **Affected Drugs**: 1-3 random drugs per event
 - **Duration**: Permanent until next price fluctuation
 - **City-Specific**: Only affects drugs in your current city
 
+### **Snitch Event Details:**
+- **Trigger Condition**: Only occurs when reputation > 11
+- **Demand**: 10-25% of your current money
+- **Intimidation Cost**: 10 + (0.2-0.4 × reputation) points
+- **Choices**:
+  - **Pay Off**: Lose money + increase police heat
+  - **Intimidate**: Lose reputation + no police heat increase
+- **Consequences**: Failure to handle results in automatic police heat increase
+
 ### **Strategic Impact:**
 - **Risk Management**: Events can create both opportunities and threats
 - **Market Timing**: Plan your trades around potential disruptions
 - **City Selection**: Some cities may be more prone to certain events
 - **Financial Planning**: Unexpected costs and windfalls require adaptation
+- **Reputation Management**: High reputation brings both benefits and risks
 
 ## Hospital System
 

@@ -32,7 +32,10 @@ random_event() {
         7)
             girlfriend_weed_event
             ;;
-        # Events 8-19: No event (60% chance of nothing happening)
+        8)
+            snitch_event
+            ;;
+        # Events 9-19: No event (55% chance of nothing happening)
     esac
 }
 
@@ -181,5 +184,116 @@ girlfriend_weed_event() {
         if [ ${REPUTATION} -lt 0 ]; then
             REPUTATION=0
         fi
+    fi
+}
+
+# Event 8: Snitch Event
+snitch_event() {
+    # Only trigger if player has reputation > 11
+    if [ ${REPUTATION} -gt 11 ]; then
+        echo
+        red "🚨 A SNITCH HAS FOUND YOU! 🚨"
+        echo
+        yellow "A local informant has discovered your criminal activities!"
+        yellow "He's threatening to go to the police unless you pay up..."
+        echo
+        
+        # Calculate demand amount (10-25% of current money)
+        local demand_percent=$((RANDOM % 16 + 10))  # 10-25%
+        local demand_amount=$(echo "scale=0; ${MONEY} * ${demand_percent} / 100" | bc -l)
+        demand_amount=${demand_percent%.*}  # Remove decimal
+        
+        # Ensure minimum demand
+        if [ ${demand_amount} -lt 50 ]; then
+            demand_amount=50
+        fi
+        
+        # Calculate intimidation cost (10 + 0.2-0.4x reputation)
+        local intimidation_multiplier=$(echo "scale=1; $((${RANDOM} % 3 + 2)) / 10" | bc -l)  # 0.2-0.4
+        local intimidation_cost=$(echo "scale=0; 10 + ${REPUTATION} * ${intimidation_multiplier}" | bc -l)
+        intimidation_cost=${intimidation_cost%.*}  # Remove decimal
+        
+        # Ensure minimum intimidation cost
+        if [ ${intimidation_cost} -lt 10 ]; then
+            intimidation_cost=10
+        fi
+        
+        # Ensure intimidation doesn't exceed current reputation
+        if [ ${intimidation_cost} -gt ${REPUTATION} ]; then
+            intimidation_cost=${REPUTATION}
+        fi
+        
+        printf "%s\n" \
+            "$(bold "💰 PAY HIM OFF:")" \
+            "$(dim "Cost: \$${demand_amount} (${demand_percent}% of your money)")" \
+            "$(red "⚠️ Will increase police heat!")" "" \
+            "$(bold "😤 INTIMIDATE HIM:")" \
+            "$(dim "Cost: ${intimidation_cost} reputation points")" \
+            "$(green "✅ No police heat increase")" "" \
+            "Choose your response:" \
+            "1. 💰 Pay him off (\$${demand_amount})" \
+            "2. 😤 Intimidate him (${intimidation_cost} reputation)" ""
+        
+        read -p "Choose option (1-2): " choice
+        
+        # Validate input
+        if ! [[ "$choice" =~ ^[0-9]+$ ]]; then
+            red "Error: Please enter a valid number!"
+            return
+        fi
+        
+        case $choice in
+            1)
+                # Pay him off
+                if [ ${MONEY} -ge ${demand_amount} ]; then
+                    MONEY=$((${MONEY} - ${demand_amount}))
+                    red "💰 You paid the snitch \$${demand_amount} to keep quiet"
+                    
+                    # Increase police heat
+                    if [ ${POLICE_HEAT} -gt 0 ]; then
+                        local heat_increase=$(echo "scale=0; ${POLICE_HEAT} * 0.5" | bc -l)
+                        heat_increase=${heat_increase%.*}
+                        if [ ${heat_increase} -lt 1 ]; then
+                            heat_increase=1
+                        fi
+                        POLICE_HEAT=$((${POLICE_HEAT} + ${heat_increase}))
+                        red "🚔 Police heat increased by ${heat_increase} (now ${POLICE_HEAT})"
+                    else
+                        local heat_increase=$((RANDOM % 21 + 10))  # 10-30
+                        POLICE_HEAT=${heat_increase}
+                        red "🚔 Police heat increased to ${POLICE_HEAT}"
+                    fi
+                else
+                    red "Error: You don't have enough money! The snitch goes to the police anyway!"
+                    local heat_increase=$((RANDOM % 21 + 10))  # 10-30
+                    POLICE_HEAT=${heat_increase}
+                    red "🚔 Police heat increased to ${POLICE_HEAT}"
+                fi
+                ;;
+            2)
+                # Intimidate him
+                if [ ${REPUTATION} -ge ${intimidation_cost} ]; then
+                    REPUTATION=$((${REPUTATION} - ${intimidation_cost}))
+                    green "😤 You successfully intimidated the snitch!"
+                    green "Lost ${intimidation_cost} reputation points (now ${REPUTATION})"
+                    yellow "The snitch backed down and won't talk to the police"
+                else
+                    red "Error: You don't have enough reputation to intimidate him!"
+                    red "The snitch goes to the police anyway!"
+                    local heat_increase=$((RANDOM % 21 + 10))  # 10-30
+                    POLICE_HEAT=${heat_increase}
+                    red "🚔 Police heat increased to ${POLICE_HEAT}"
+                fi
+                ;;
+            *)
+                red "Error: Invalid choice! The snitch goes to the police anyway!"
+                local heat_increase=$((RANDOM % 21 + 10))  # 10-30
+                POLICE_HEAT=${heat_increase}
+                red "🚔 Police heat increased to ${POLICE_HEAT}"
+                ;;
+        esac
+        
+        echo
+        read -p "Press Enter to continue..."
     fi
 }
