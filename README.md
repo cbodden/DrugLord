@@ -13,6 +13,7 @@ This version is written as a bash script trying to stick to only GNU coreutils.
 druglord/
 ├── druglord.sh              # Main game script
 ├── README.md                 # This documentation
+├── CHANGELOG.md              # Version history and updates
 └── lib/                      # Library directory
     ├── colors.sh             # Color functions and ANSI escape codes
     ├── data.sh               # Game data arrays and initial state
@@ -207,42 +208,9 @@ The game features a comprehensive banking system for financial management:
 - **Timing**: Critical for loan repayment to avoid penalties
 - **Compound Growth**: Savings grow exponentially over time
 
-## Recent Updates & Bug Fixes
+## Version History
 
-### **v2.1 - Banking System & Enhanced Features**
-
-#### **New Features:**
-- 🏦 **Banking System**: Complete financial management with savings and loans
-- 💰 **Savings Account**: 5% daily interest on deposits
-- 💳 **Loan System**: 15% daily interest borrowing with flexible terms
-- 📊 **Financial Tracking**: Comprehensive banking information display
-- ⏰ **Daily Processing**: Automatic interest calculation and loan management
-
-#### **Banking Features:**
-- **Savings Interest**: 5% daily compound interest
-- **Loan Management**: High-risk 15% daily interest loans
-- **Overdue Protection**: Automatic conversion to general debt
-- **Financial Planning**: Balance cash flow and investment strategies
-
-### **v2.0 - Hospital System & Bug Fixes**
-
-#### **New Features:**
-- 🏥 **Hospital System**: Complete healing system with dynamic pricing
-- 💰 **Emergency Fees**: Higher costs for critical health conditions
-- 🔄 **Multiple Treatment Options**: Full, partial, and basic treatments
-
-#### **Bug Fixes:**
-- ✅ **Save File Bug**: Fixed critical save file naming inconsistency
-- ✅ **Input Validation**: Enhanced validation for all menu inputs
-- ✅ **Error Handling**: Improved error messages and user feedback
-- ✅ **Save System**: Added automatic backup creation and integrity validation
-- ✅ **File Safety**: Backup restoration on save failures
-
-#### **Improvements:**
-- 🎯 **Better Error Messages**: More descriptive and consistent error feedback
-- 🔒 **Input Safety**: Comprehensive validation prevents crashes
-- 💾 **Save Reliability**: Backup system prevents data loss
-- 🎨 **User Experience**: Enhanced visual feedback and menu organization
+For detailed information about recent updates, bug fixes, and new features, see [CHANGELOG.md](CHANGELOG.md).
 
 ## Planned Features / Updates
 - Multiple save files
