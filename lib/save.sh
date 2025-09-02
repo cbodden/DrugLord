@@ -6,8 +6,15 @@ save_game() {
         cp druglord_save.txt druglord_save.txt.backup
     fi
     
-    # Save game state
+    # Validate game state before saving
+    if [ -z "${MONEY}" ] || [ -z "${DAY}" ] || [ -z "${HEALTH}" ]; then
+        red "Error: Invalid game state detected! Cannot save."
+        return 1
+    fi
+    
+    # Save game state with checksum
     {
+        echo "# DrugLord Save File - Generated $(date)"
         echo "MONEY=${MONEY}"
         echo "DEBT=${DEBT}"
         echo "DAY=${DAY}"
@@ -41,6 +48,8 @@ save_game() {
         for city in "${!travel_cost_volatility[@]}"; do
             echo "travel_cost_volatility[${city}]=${travel_cost_volatility[${city}]}"
         done
+        # Add checksum for integrity validation
+        echo "SAVE_CHECKSUM=$(echo "${MONEY}${DAY}${HEALTH}${CURRENT_CITY}" | md5sum | cut -d' ' -f1)"
     } > druglord_save.txt
     
     # Verify save file was created successfully
@@ -64,13 +73,37 @@ load_game() {
             return 1
         fi
         
+        # Check for save file header
+        if ! head -1 "druglord_save.txt" | grep -q "DrugLord Save File"; then
+            red "Error: Invalid save file format!"
+            return 1
+        fi
+        
         # Try to load the save file
         if source druglord_save.txt 2>/dev/null; then
             # Validate critical variables exist
-            if [ -z "${MONEY}" ] || [ -z "${DEBT}" ] || [ -z "${DAY}" ]; then
+            if [ -z "${MONEY}" ] || [ -z "${DEBT}" ] || [ -z "${DAY}" ] || [ -z "${HEALTH}" ]; then
                 red "Error: Save file is corrupted (missing critical data)!"
                 return 1
             fi
+            
+            # Validate checksum if present
+            if [ -n "${SAVE_CHECKSUM}" ]; then
+                local calculated_checksum=$(echo "${MONEY}${DAY}${HEALTH}${CURRENT_CITY}" | md5sum | cut -d' ' -f1)
+                if [ "${SAVE_CHECKSUM}" != "${calculated_checksum}" ]; then
+                    red "Error: Save file integrity check failed!"
+                    return 1
+                fi
+            fi
+            
+            # Validate value ranges
+            if [ ${MONEY} -lt 0 ] || [ ${MONEY} -gt 1000000 ] || \
+               [ ${DAY} -lt 1 ] || [ ${DAY} -gt 10000 ] || \
+               [ ${HEALTH} -lt 0 ] || [ ${HEALTH} -gt 100 ]; then
+                red "Error: Save file contains invalid values!"
+                return 1
+            fi
+            
             green "Game loaded successfully!"
         else
             red "Error: Failed to load save file!"
@@ -78,6 +111,11 @@ load_game() {
             if [ -f "druglord_save.txt.backup" ]; then
                 red "Attempting to restore from backup..."
                 if source druglord_save.txt.backup 2>/dev/null; then
+                    # Validate backup file
+                    if [ -z "${MONEY}" ] || [ -z "${DEBT}" ] || [ -z "${DAY}" ]; then
+                        red "Backup save file is also corrupted!"
+                        return 1
+                    fi
                     green "Backup save file loaded successfully!"
                 else
                     red "Backup save file is also corrupted!"

@@ -69,7 +69,11 @@ buy_menu() {
         read -p "How many units? " quantity
 
         if [[ "${quantity}" =~ ^[0-9]+$ ]] && [ "${quantity}" -gt 0 ]; then
-            buy_drug "${SELECTED_DRUG}" "${quantity}"
+            if [ "${quantity}" -gt 1000 ]; then
+                red "Error: Maximum quantity is 1000 units!"
+            else
+                buy_drug "${SELECTED_DRUG}" "${quantity}"
+            fi
         else
             red "Error: Invalid quantity! Please enter a positive number."
         fi
@@ -148,7 +152,11 @@ sell_menu() {
         read -p "How many units? " quantity
 
         if [[ "$quantity" =~ ^[0-9]+$ ]] && [ "$quantity" -gt 0 ]; then
-            sell_drug "$selected_drug" "$quantity"
+            if [ "$quantity" -gt 1000 ]; then
+                red "Error: Maximum quantity is 1000 units!"
+            else
+                sell_drug "$selected_drug" "$quantity"
+            fi
         else
             red "Error: Invalid quantity! Please enter a positive number."
         fi
@@ -371,7 +379,11 @@ banking_menu() {
             read -p "How much to deposit? " amount
             
             if [[ "$amount" =~ ^[0-9]+$ ]] && [ "$amount" -gt 0 ]; then
-                deposit_money "$amount"
+                if [ "$amount" -gt 100000 ]; then
+                    red "Error: Maximum deposit amount is \$100,000!"
+                else
+                    deposit_money "$amount"
+                fi
             else
                 red "Error: Please enter a valid positive number!"
             fi
@@ -390,7 +402,11 @@ banking_menu() {
             read -p "How much to withdraw? " amount
             
             if [[ "$amount" =~ ^[0-9]+$ ]] && [ "$amount" -gt 0 ]; then
-                withdraw_money "$amount"
+                if [ "$amount" -gt 100000 ]; then
+                    red "Error: Maximum withdrawal amount is \$100,000!"
+                else
+                    withdraw_money "$amount"
+                fi
             else
                 red "Error: Please enter a valid positive number!"
             fi
@@ -412,7 +428,13 @@ banking_menu() {
             
             if [[ "$amount" =~ ^[0-9]+$ ]] && [ "$amount" -gt 0 ] && \
                [[ "$days" =~ ^[0-9]+$ ]] && [ "$days" -gt 0 ]; then
-                take_loan "$amount" "$days"
+                if [ "$amount" -gt 50000 ]; then
+                    red "Error: Maximum loan amount is \$50,000!"
+                elif [ "$days" -gt 30 ]; then
+                    red "Error: Maximum loan term is 30 days!"
+                else
+                    take_loan "$amount" "$days"
+                fi
             else
                 red "Error: Please enter valid positive numbers!"
             fi
@@ -432,7 +454,11 @@ banking_menu() {
             read -p "How much to pay? " amount
             
             if [[ "$amount" =~ ^[0-9]+$ ]] && [ "$amount" -gt 0 ]; then
-                pay_loan "$amount"
+                if [ "$amount" -gt 100000 ]; then
+                    red "Error: Maximum payment amount is \$100,000!"
+                else
+                    pay_loan "$amount"
+                fi
             else
                 red "Error: Please enter a valid positive number!"
             fi

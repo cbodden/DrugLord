@@ -18,8 +18,13 @@ get_city_price() {
     local base_price=${base_prices[${drug}]}
     local multiplier=${city_price_multipliers[${CURRENT_CITY}]}
 
-    # Calculate city-adjusted price (multiply by 100 for integer math, then divide)
-    local adjusted_price=$(echo "scale=0; ${base_price} * ${multiplier}" | bc -l)
+    # Calculate city-adjusted price with error handling
+    local adjusted_price=$(echo "scale=0; ${base_price} * ${multiplier}" | bc -l 2>/dev/null)
+    if [ -z "$adjusted_price" ] || [ "$adjusted_price" = "0" ]; then
+        red "Error: Price calculation failed for ${drug}!"
+        echo "0"
+        return 1
+    fi
     echo ${adjusted_price%.*}  # Remove decimal if any
 }
 

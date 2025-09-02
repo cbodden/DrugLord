@@ -8,9 +8,12 @@ update_prices() {
         local base_price=${base_prices[$drug]}
         local city_multiplier=${city_price_multipliers[${CURRENT_CITY}]}
 
-        # Calculate city-adjusted base price
-        local city_base_price=$( \
-            echo "scale=0; ${base_price} * ${city_multiplier}" | bc -l)
+        # Calculate city-adjusted base price with error handling
+        local city_base_price=$(echo "scale=0; ${base_price} * ${city_multiplier}" | bc -l 2>/dev/null)
+        if [ -z "$city_base_price" ] || [ "$city_base_price" = "0" ]; then
+            red "Error: Price calculation failed for ${drug}!"
+            continue
+        fi
         city_base_price=${city_base_price%.*}
 
         # Calculate change based on volatility
@@ -107,8 +110,32 @@ buy_drug() {
         return 1
     fi
 
+    # Input validation and bounds checking
+    if [ ${QUANTITY} -le 0 ]; then
+        red "Error: Quantity must be positive!"
+        return 1
+    fi
+
+    if [ ${QUANTITY} -gt 1000 ]; then
+        red "Error: Maximum quantity is 1000 units!"
+        return 1
+    fi
+
     local PRICE_PER_UNIT=${drug_prices[${DRUG}]}
+    
+    # Arithmetic overflow protection
+    if [ ${PRICE_PER_UNIT} -gt 10000 ] || [ ${QUANTITY} -gt 1000 ]; then
+        red "Error: Values too large for safe calculation!"
+        return 1
+    fi
+
     local COST=$((${PRICE_PER_UNIT} * ${QUANTITY}))
+
+    # Check for overflow in result
+    if [ ${COST} -lt 0 ]; then
+        red "Error: Calculation overflow detected!"
+        return 1
+    fi
 
     if [ ${MONEY} -lt ${COST} ]
     then
@@ -133,7 +160,33 @@ sell_drug() {
         return 1
     fi
 
-    local PRICE=$((${drug_prices[${DRUG}]} * ${QUANTITY}))
+    # Input validation and bounds checking
+    if [ ${QUANTITY} -le 0 ]; then
+        red "Error: Quantity must be positive!"
+        return 1
+    fi
+
+    if [ ${QUANTITY} -gt 1000 ]; then
+        red "Error: Maximum quantity is 1000 units!"
+        return 1
+    fi
+
+    local PRICE_PER_UNIT=${drug_prices[${DRUG}]}
+    
+    # Arithmetic overflow protection
+    if [ ${PRICE_PER_UNIT} -gt 10000 ] || [ ${QUANTITY} -gt 1000 ]; then
+        red "Error: Values too large for safe calculation!"
+        return 1
+    fi
+
+    local PRICE=$((${PRICE_PER_UNIT} * ${QUANTITY}))
+    
+    # Check for overflow in result
+    if [ ${PRICE} -lt 0 ]; then
+        red "Error: Calculation overflow detected!"
+        return 1
+    fi
+
     local PROFIT=$((${PRICE} + (RANDOM % 20 - 10)))  # Random profit/loss
 
     if [ ${PROFIT} -lt 0 ]
@@ -282,18 +335,26 @@ next_day() {
 
 # Banking system functions
 process_banking_daily() {
-    # Process savings interest
+    # Process savings interest with error handling
     if [ ${SAVINGS} -gt 0 ]; then
-        local interest=$(echo "scale=0; ${SAVINGS} * ${SAVINGS_INTEREST_RATE} / 100" | bc -l)
+        local interest=$(echo "scale=0; ${SAVINGS} * ${SAVINGS_INTEREST_RATE} / 100" | bc -l 2>/dev/null)
+        if [ -z "$interest" ] || [ "$interest" = "0" ]; then
+            red "Error: Interest calculation failed!"
+            return 1
+        fi
         SAVINGS=$((${SAVINGS} + ${interest}))
         if [ ${interest} -gt 0 ]; then
             green "💰 Savings interest: +\$${interest} (Total savings: \$${SAVINGS})"
         fi
     fi
 
-    # Process loan interest and payments
+    # Process loan interest and payments with error handling
     if [ ${LOAN_AMOUNT} -gt 0 ]; then
-        local loan_interest=$(echo "scale=0; ${LOAN_AMOUNT} * ${LOAN_INTEREST_RATE} / 100" | bc -l)
+        local loan_interest=$(echo "scale=0; ${LOAN_AMOUNT} * ${LOAN_INTEREST_RATE} / 100" | bc -l 2>/dev/null)
+        if [ -z "$loan_interest" ] || [ "$loan_interest" = "0" ]; then
+            red "Error: Loan interest calculation failed!"
+            return 1
+        fi
         LOAN_AMOUNT=$((${LOAN_AMOUNT} + ${loan_interest}))
         LOAN_DAYS_LEFT=$((${LOAN_DAYS_LEFT} - 1))
         
@@ -313,6 +374,17 @@ process_banking_daily() {
 deposit_money() {
     local amount=$1
     
+    # Input validation and bounds checking
+    if [ ${amount} -le 0 ]; then
+        red "Error: Amount must be positive!"
+        return 1
+    fi
+
+    if [ ${amount} -gt 100000 ]; then
+        red "Error: Maximum deposit amount is \$100,000!"
+        return 1
+    fi
+    
     if [ ${MONEY} -lt ${amount} ]; then
         red "Error: Insufficient funds! You only have \$${MONEY}"
         return 1
@@ -326,6 +398,17 @@ deposit_money() {
 
 withdraw_money() {
     local amount=$1
+    
+    # Input validation and bounds checking
+    if [ ${amount} -le 0 ]; then
+        red "Error: Amount must be positive!"
+        return 1
+    fi
+
+    if [ ${amount} -gt 100000 ]; then
+        red "Error: Maximum withdrawal amount is \$100,000!"
+        return 1
+    fi
     
     if [ ${SAVINGS} -lt ${amount} ]; then
         red "Error: Insufficient savings! You only have \$${SAVINGS} in savings"
@@ -342,13 +425,38 @@ take_loan() {
     local amount=$1
     local days=$2
     
+    # Input validation and bounds checking
+    if [ ${amount} -le 0 ]; then
+        red "Error: Loan amount must be positive!"
+        return 1
+    fi
+
+    if [ ${amount} -gt 50000 ]; then
+        red "Error: Maximum loan amount is \$50,000!"
+        return 1
+    fi
+
+    if [ ${days} -le 0 ]; then
+        red "Error: Days must be positive!"
+        return 1
+    fi
+
+    if [ ${days} -gt 30 ]; then
+        red "Error: Maximum loan term is 30 days!"
+        return 1
+    fi
+    
     if [ ${LOAN_AMOUNT} -gt 0 ]; then
         red "Error: You already have an outstanding loan of \$${LOAN_AMOUNT}!"
         return 1
     fi
     
-    # Calculate total loan amount with interest
-    local total_interest=$(echo "scale=0; ${amount} * ${LOAN_INTEREST_RATE} * ${days} / 100" | bc -l)
+    # Calculate total loan amount with interest and error handling
+    local total_interest=$(echo "scale=0; ${amount} * ${LOAN_INTEREST_RATE} * ${days} / 100" | bc -l 2>/dev/null)
+    if [ -z "$total_interest" ] || [ "$total_interest" = "0" ]; then
+        red "Error: Loan calculation failed!"
+        return 1
+    fi
     local total_loan=$((${amount} + ${total_interest}))
     
     MONEY=$((${MONEY} + ${amount}))
@@ -362,6 +470,17 @@ take_loan() {
 
 pay_loan() {
     local amount=$1
+    
+    # Input validation and bounds checking
+    if [ ${amount} -le 0 ]; then
+        red "Error: Payment amount must be positive!"
+        return 1
+    fi
+
+    if [ ${amount} -gt 100000 ]; then
+        red "Error: Maximum payment amount is \$100,000!"
+        return 1
+    fi
     
     if [ ${LOAN_AMOUNT} -le 0 ]; then
         red "Error: You don't have any outstanding loans!"

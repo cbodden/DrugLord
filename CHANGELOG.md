@@ -5,6 +5,39 @@ All notable changes to DrugLord will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2] - 2024-12-19
+
+### Security & Bug Fixes
+- 🔒 **Input Bounds Checking**: Added comprehensive limits for all user inputs
+  - Drug quantities limited to maximum 1000 units
+  - Banking amounts capped at $100,000 for deposits/withdrawals
+  - Loan amounts limited to $50,000 with 30-day maximum terms
+- 🛡️ **Arithmetic Overflow Protection**: Prevents integer overflow in calculations
+  - Pre-calculation bounds checking for large values
+  - Post-calculation overflow detection and error handling
+  - Safe arithmetic operations throughout the game
+- 🔧 **Enhanced Error Handling**: Improved robustness of mathematical operations
+  - All bc calculator operations now include error suppression
+  - Result validation for empty or invalid calculations
+  - Graceful failure handling with informative error messages
+- 💾 **Save File Security**: Enhanced save system with integrity validation
+  - MD5 checksum validation for save file integrity
+  - File format validation with proper headers
+  - Value range validation for loaded game states
+  - Improved backup recovery with better validation
+
+### Technical Improvements
+- **Input Validation**: All menu inputs now have bounds checking before processing
+- **Error Recovery**: Better handling of calculation failures and invalid states
+- **Data Integrity**: Save files are now protected against corruption and tampering
+- **User Safety**: Prevents crashes from invalid inputs or arithmetic overflow
+
+### Changed
+- Enhanced all financial functions with comprehensive input validation
+- Improved error messages for better user guidance
+- Updated save file format with security headers and checksums
+- Strengthened all arithmetic operations with overflow protection
+
 ## [2.1] - 2024-12-19
 
 ### Added
