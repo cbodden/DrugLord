@@ -48,11 +48,13 @@ druglord/
 - Buy drugs menu with price indicators
 - Sell drugs menu
 - Travel menu with city selection and fluctuating costs
+- Hospital menu with healing options and dynamic pricing
 
 ### `save.sh`
-- Save game state to file
-- Load game state from file
+- Save game state to file with automatic backup creation
+- Load game state from file with integrity validation
 - Handles all game variables and arrays (including travel cost data)
+- Automatic backup restoration on save failures
 
 ### `utils.sh`
 - Screen clearing and header display
@@ -66,6 +68,18 @@ Run the game with:
 ```bash
 ./druglord.sh
 ```
+
+### Main Menu Options:
+1. 📊 View Stats & Inventory
+2. 🏪 View Market Prices
+3. 🛒 Buy Drugs
+4. 💰 Sell Drugs
+5. ✈️ Travel to Another City
+6. 🏥 Hospital (Heal)
+7. ⏰ Next Day
+8. 💾 Save Game
+9. 📁 Load Game
+10. ❌ Quit
 
 ## Benefits of Modular Structure
 
@@ -90,8 +104,10 @@ Run the game with:
 - 💹 **Dynamic Price Fluctuation** for both drugs and travel costs
 - 🎯 **Volatility-Based Travel Costs** (longer distances = higher volatility)
 - 🚔 **Police Encounters** and random events
-- 💾 **Save/Load System** for persistent gameplay
+- 🏥 **Hospital System** with dynamic healing costs and emergency fees
+- 💾 **Enhanced Save/Load System** with backup and integrity validation
 - 🎨 **Colored Terminal Output** for enhanced visual experience
+- ✅ **Comprehensive Input Validation** and error handling
 
 ## Travel Cost Fluctuation System
 
@@ -118,8 +134,59 @@ The game now features dynamic travel costs that fluctuate in real-time, similar 
 - Visual indicator shows "✈️ Travel costs fluctuate in real-time!"
 - All travel cost data is saved and loaded with your game progress
 
+## Hospital System
+
+The game features a comprehensive hospital system for health management:
+
+### **Healing Mechanics:**
+- Only accessible when health is below 100
+- Three treatment options with different costs and effects
+- Dynamic pricing based on current health level
+- Emergency fees for critical health conditions
+
+### **Treatment Options:**
+1. **💉 Full Treatment** - Restores health to 100
+2. **🩹 Partial Treatment** - Restores 25 health points
+3. **💊 Basic Treatment** - Restores 10 health points
+
+### **Pricing System:**
+- **Base cost**: $50
+- **Cost per health point**: $10
+- **Emergency fees**:
+  - Health < 20: +$200 emergency fee
+  - Health < 50: +$100 emergency fee
+
+### **Examples:**
+- Health 80: Full treatment = $250
+- Health 30: Full treatment = $850 (includes emergency fee)
+- Health 10: Full treatment = $1,150 (includes emergency fee)
+
+## Recent Updates & Bug Fixes
+
+### **v2.0 - Hospital System & Bug Fixes**
+
+#### **New Features:**
+- 🏥 **Hospital System**: Complete healing system with dynamic pricing
+- 💰 **Emergency Fees**: Higher costs for critical health conditions
+- 🔄 **Multiple Treatment Options**: Full, partial, and basic treatments
+
+#### **Bug Fixes:**
+- ✅ **Save File Bug**: Fixed critical save file naming inconsistency
+- ✅ **Input Validation**: Enhanced validation for all menu inputs
+- ✅ **Error Handling**: Improved error messages and user feedback
+- ✅ **Save System**: Added automatic backup creation and integrity validation
+- ✅ **File Safety**: Backup restoration on save failures
+
+#### **Improvements:**
+- 🎯 **Better Error Messages**: More descriptive and consistent error feedback
+- 🔒 **Input Safety**: Comprehensive validation prevents crashes
+- 💾 **Save Reliability**: Backup system prevents data loss
+- 🎨 **User Experience**: Enhanced visual feedback and menu organization
+
 ## Planned Features / Updates
 - Multiple save files
 - Guns for fights
 - Pockets / Bags for holding more (planned as a random event)
+- Bank system for loans and interest
+- Reputation-based events and opportunities
 - .....And more

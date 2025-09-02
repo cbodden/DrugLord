@@ -8,10 +8,11 @@ show_menu() {
         "3. 🛒 Buy Drugs" \
         "4. 💰 Sell Drugs" \
         "5. ✈️ Travel to Another City" \
-        "6. ⏰ Next Day" \
-        "7. 💾 Save Game" \
-        "8. 📁 Load Game" \
-        "9. ❌ Quit" ""
+        "6. 🏥 Hospital (Heal)" \
+        "7. ⏰ Next Day" \
+        "8. 💾 Save Game" \
+        "9. 📁 Load Game" \
+        "10. ❌ Quit" ""
 }
 
 buy_menu() {
@@ -56,6 +57,12 @@ buy_menu() {
 
     read -p "Choose drug (1-${i}): " choice
 
+    # Validate input is a number
+    if ! [[ "${choice}" =~ ^[0-9]+$ ]]; then
+        red "Error: Please enter a valid number!"
+        return
+    fi
+
     if [ "${choice}" -ge 1 ] && [ "${choice}" -lt ${i} ]; then
         local SELECTED_DRUG=${drug_list[$((choice - 1))]}
         read -p "How many units? " quantity
@@ -63,7 +70,7 @@ buy_menu() {
         if [[ "${quantity}" =~ ^[0-9]+$ ]] && [ "${quantity}" -gt 0 ]; then
             buy_drug "${SELECTED_DRUG}" "${quantity}"
         else
-            red "Invalid quantity!"
+            red "Error: Invalid quantity! Please enter a positive number."
         fi
     fi
 }
@@ -121,13 +128,19 @@ sell_menu() {
     done
 
     if [ $sell_i -eq 1 ]; then
-        red "No drugs to sell!"
+        red "Error: No drugs available to sell!"
         return
     fi
 
     printf "%s\n" "$sell_i. Back to main menu" ""
 
     read -p "Choose drug (1-$sell_i): " choice
+
+    # Validate input is a number
+    if ! [[ "$choice" =~ ^[0-9]+$ ]]; then
+        red "Error: Please enter a valid number!"
+        return
+    fi
 
     if [ "$choice" -ge 1 ] && [ "$choice" -lt $sell_i ]; then
         local selected_drug=${sell_drug_list[$((choice - 1))]}
@@ -136,7 +149,7 @@ sell_menu() {
         if [[ "$quantity" =~ ^[0-9]+$ ]] && [ "$quantity" -gt 0 ]; then
             sell_drug "$selected_drug" "$quantity"
         else
-            red "Invalid quantity!"
+            red "Error: Invalid quantity! Please enter a positive number."
         fi
     fi
 }
@@ -186,6 +199,12 @@ travel_menu() {
 
     read -p "Choose city (1-${i}): " choice
 
+    # Validate input is a number
+    if ! [[ "${choice}" =~ ^[0-9]+$ ]]; then
+        red "Error: Please enter a valid number!"
+        return
+    fi
+
     if [ "${choice}" -ge 1 ] && [ "${choice}" -lt ${i} ]; then
         local selected_city=${city_list[$((choice - 1))]}
         local travel_cost=${city_travel_costs[${selected_city}]}
@@ -200,7 +219,119 @@ travel_menu() {
             green "Traveled to ${cities[${CURRENT_CITY}]} for \$${travel_cost}!"
             echo "$(dim "Prices have been adjusted for the new city.")"
         else
-            red "Not enough money! You need \$${travel_cost} but only have ${MONEY}"
+            red "Error: Insufficient funds! You need \$${travel_cost} but only have \$${MONEY}"
         fi
     fi
+}
+
+hospital_menu() {
+    # Check if player needs healing
+    if [ ${HEALTH} -ge 100 ]; then
+        green "You're already at full health (${HEALTH})! No need for medical attention."
+        return
+    fi
+
+    # Calculate healing cost based on current health
+    local health_deficit=$((100 - HEALTH))
+    local base_cost=50
+    local cost_per_point=10
+    local emergency_fee=0
+    
+    # Add emergency fee for critical health
+    if [ ${HEALTH} -lt 20 ]; then
+        emergency_fee=200
+    elif [ ${HEALTH} -lt 50 ]; then
+        emergency_fee=100
+    fi
+    
+    local total_cost=$((base_cost + (health_deficit * cost_per_point) + emergency_fee))
+    
+    printf "%s\n" \
+        "$(bold "🏥 HOSPITAL - EMERGENCY CARE:")" \
+        "$(dim "Current health: ${HEALTH}/100")" \
+        "$(dim "Health deficit: ${health_deficit} points")" "" \
+        "$(bold "Treatment Options:")" \
+        "1. 💉 Full Treatment - Restore to 100 health" \
+        "2. 🩹 Partial Treatment - Restore 25 health points" \
+        "3. 💊 Basic Treatment - Restore 10 health points" \
+        "4. 🚪 Leave Hospital" ""
+
+    # Calculate costs for different treatments
+    local full_cost=${total_cost}
+    local partial_cost=$((total_cost / 4))
+    local basic_cost=$((total_cost / 10))
+    
+    # Ensure minimum costs
+    if [ ${partial_cost} -lt 25 ]; then
+        partial_cost=25
+    fi
+    if [ ${basic_cost} -lt 10 ]; then
+        basic_cost=10
+    fi
+
+    printf "%s\n" \
+        "$(bold "Treatment Costs:")" \
+        "💉 Full Treatment: \$${full_cost}" \
+        "🩹 Partial Treatment: \$${partial_cost}" \
+        "💊 Basic Treatment: \$${basic_cost}" ""
+
+    # Show emergency fee if applicable
+    if [ ${emergency_fee} -gt 0 ]; then
+        red "⚠️ Emergency fee applies due to critical health condition!"
+    fi
+
+    read -p "Choose treatment (1-4): " choice
+
+    # Validate input is a number
+    if ! [[ "$choice" =~ ^[0-9]+$ ]]; then
+        red "Error: Please enter a valid number!"
+        return
+    fi
+
+    case $choice in
+        1)
+            if [ ${MONEY} -ge ${full_cost} ]; then
+                MONEY=$((${MONEY} - ${full_cost}))
+                HEALTH=100
+                green "💉 Full treatment complete! Health restored to 100."
+                green "Cost: \$${full_cost}"
+            else
+                red "Error: Insufficient funds! You need \$${full_cost} but only have \$${MONEY}"
+            fi
+            ;;
+        2)
+            if [ ${MONEY} -ge ${partial_cost} ]; then
+                MONEY=$((${MONEY} - ${partial_cost}))
+                HEALTH=$((${HEALTH} + 25))
+                if [ ${HEALTH} -gt 100 ]; then
+                    HEALTH=100
+                fi
+                green "🩹 Partial treatment complete! Health increased by 25 points."
+                green "Current health: ${HEALTH}/100"
+                green "Cost: \$${partial_cost}"
+            else
+                red "Error: Insufficient funds! You need \$${partial_cost} but only have \$${MONEY}"
+            fi
+            ;;
+        3)
+            if [ ${MONEY} -ge ${basic_cost} ]; then
+                MONEY=$((${MONEY} - ${basic_cost}))
+                HEALTH=$((${HEALTH} + 10))
+                if [ ${HEALTH} -gt 100 ]; then
+                    HEALTH=100
+                fi
+                green "💊 Basic treatment complete! Health increased by 10 points."
+                green "Current health: ${HEALTH}/100"
+                green "Cost: \$${basic_cost}"
+            else
+                red "Error: Insufficient funds! You need \$${basic_cost} but only have \$${MONEY}"
+            fi
+            ;;
+        4)
+            yellow "Leaving hospital. Take care of your health!"
+            ;;
+        *)
+            red "Error: Invalid choice! Please select 1-4."
+            ;;
+    esac
 }

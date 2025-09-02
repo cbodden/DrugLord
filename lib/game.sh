@@ -103,7 +103,7 @@ buy_drug() {
 
     if [ -z "${drug_prices[${DRUG}]}" ]
     then
-        red "Invalid drug!"
+        red "Error: Invalid drug selection!"
         return 1
     fi
 
@@ -112,7 +112,7 @@ buy_drug() {
 
     if [ ${MONEY} -lt ${COST} ]
     then
-        red "Not enough money! You need \$${COST} but only have ${MONEY}"
+        red "Error: Insufficient funds! You need \$${COST} but only have \$${MONEY}"
         return 1
     fi
 
@@ -129,7 +129,7 @@ sell_drug() {
 
     if [ -z "${drugs[${DRUG}]}" ] || [ "${drugs[${DRUG}]}" -lt ${QUANTITY} ]
     then
-        red "Not enough ${drug_names[${DRUG}]} in inventory!"
+        red "Error: Insufficient inventory! You only have ${drugs[${DRUG}]:-0} units of ${drug_names[${DRUG}]}, but trying to sell ${QUANTITY}"
         return 1
     fi
 

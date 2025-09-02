@@ -34,7 +34,14 @@ main() {
         print_inventory
         show_menu
 
-        read -p "Choose option (1-9): " choice
+        read -p "Choose option (1-10): " choice
+
+        # Validate input is a number
+        if ! [[ "$choice" =~ ^[0-9]+$ ]]; then
+            red "Error: Please enter a valid number between 1-10!"
+            read -p "Press Enter to continue..."
+            continue
+        fi
 
         case $choice in
             1)
@@ -69,23 +76,29 @@ main() {
                 read -p "Press Enter to continue..."
                 ;;
             6)
+                clear_screen
+                print_header
+                hospital_menu
+                read -p "Press Enter to continue..."
+                ;;
+            7)
                 next_day
                 check_game_over
                 ;;
-            7)
+            8)
                 save_game
                 read -p "Press Enter to continue..."
                 ;;
-            8)
+            9)
                 load_game
                 read -p "Press Enter to continue..."
                 ;;
-            9)
+            10)
                 echo "$(yellow "Thanks for playing Drug Lord!")"
                 exit 0
                 ;;
             *)
-                red "Invalid choice!"
+                red "Error: Invalid choice! Please select a number between 1-10."
                 read -p "Press Enter to continue..."
                 ;;
         esac
