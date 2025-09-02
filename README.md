@@ -249,7 +249,4 @@ The game features a comprehensive banking system for financial management:
 - Guns for fights
 - Pockets / Bags for holding more (planned as a random event)
 - ~~Bank system for loans and interest~~ ✅ **COMPLETED**
-- Reputation-based events and opportunities
-- Stock market system
-- Property investment system
 - .....And more
