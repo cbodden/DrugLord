@@ -232,50 +232,7 @@ police_encounter() {
     fi
 }
 
-random_event() {
-    local EVENT=$((RANDOM % 10))
-
-    case ${EVENT} in
-        0)
-            local BONUS=$((RANDOM % 500 + 100))
-            MONEY=$((${MONEY} + ${BONUS}))
-            green "💰 Found \$${BONUS} on the street!"
-            ;;
-        1)
-            local LOSS=$((RANDOM % 200 + 50))
-            if [ ${MONEY} -ge ${LOSS} ]
-            then
-                MONEY=$((${MONEY} - ${LOSS}))
-                red "💸 Got robbed! Lost \$${LOSS}"
-            fi
-            ;;
-        2)
-            HEALTH=$((${HEALTH} + 10))
-            if [ ${HEALTH} -gt 100 ]
-            then
-                HEALTH=100
-            fi
-            green "❤️  Feeling better! Health +10"
-            ;;
-        3)
-            DEBT=$((${DEBT} + 200))
-            red "💳 Loan shark demands payment! Debt +\$200"
-            ;;
-        4)
-            if [ ${DEBT} -gt 0 ]
-            then
-                local PAYMENT=$((RANDOM % 100 + 50))
-                if [ ${PAYMENT} -gt ${DEBT} ]
-                then
-                    PAYMENT=${DEBT}
-                fi
-                DEBT=$((${DEBT} - ${PAYMENT}))
-                MONEY=$((${MONEY} - ${PAYMENT}))
-                yellow "💸 Paid \$${PAYMENT} towards debt"
-            fi
-            ;;
-    esac
-}
+# Random events function moved to lib/random_events.sh
 
 check_game_over() {
     if [ ${HEALTH} -le 0 ]

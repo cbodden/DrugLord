@@ -10,6 +10,7 @@ source "${SCRIPT_DIR}/lib/utils.sh"
 source "${SCRIPT_DIR}/lib/game.sh"
 source "${SCRIPT_DIR}/lib/menus.sh"
 source "${SCRIPT_DIR}/lib/save.sh"
+source "${SCRIPT_DIR}/lib/random_events.sh"
 
 # Main game loop
 main() {

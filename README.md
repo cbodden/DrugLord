@@ -19,6 +19,7 @@ druglord/
     ├── data.sh               # Game data arrays and initial state
     ├── game.sh               # Core game mechanics and logic
     ├── menus.sh              # All menu functions (buy, sell, travel)
+    ├── random_events.sh      # Random events system and event functions
     ├── save.sh               # Save and load game functionality
     └── utils.sh              # Utility functions and display functions
 ```
@@ -59,6 +60,13 @@ druglord/
 - Load game state from file with integrity validation
 - Handles all game variables and arrays (including travel cost data)
 - Automatic backup restoration on save failures
+
+### `random_events.sh`
+- Random events system that triggers when advancing to the next day
+- 7 different random events including warehouse fires and police raids
+- Price manipulation events that affect drug costs in current city
+- Financial events (found money, robbery, debt changes)
+- Health and reputation events
 
 ### `utils.sh`
 - Screen clearing and header display
@@ -111,6 +119,7 @@ Run the game with:
 - 🚔 **Police Encounters** and random events
 - 🏥 **Hospital System** with dynamic healing costs and emergency fees
 - 🏦 **Banking System** with savings accounts and loans with daily interest
+- 🎲 **Random Events System** with 7 different events including warehouse incidents
 - 💾 **Enhanced Save/Load System** with backup and integrity validation
 - 🎨 **Colored Terminal Output** for enhanced visual experience
 - ✅ **Comprehensive Input Validation** and error handling
@@ -139,6 +148,42 @@ The game now features dynamic travel costs that fluctuate in real-time, similar 
 - Costs update dynamically when accessing the travel menu
 - Visual indicator shows "✈️ Travel costs fluctuate in real-time!"
 - All travel cost data is saved and loaded with your game progress
+
+## Random Events System
+
+The game features a comprehensive random events system that adds unpredictability and excitement to gameplay:
+
+### **Event Triggers:**
+- Events occur when you advance to the next day (option 8)
+- Each event has a ~7% chance of occurring (2 out of 15 possible outcomes)
+- Events are city-specific and can dramatically affect local drug prices
+
+### **Available Events:**
+
+#### **Financial Events:**
+1. **💰 Found Money** - Discover $100-$600 on the street
+2. **💸 Got Robbed** - Lose $50-$250 to street criminals
+3. **💳 Loan Shark Demands** - Forced $200 debt increase
+4. **💸 Debt Payment** - Automatic $50-$150 debt reduction
+
+#### **Health Events:**
+5. **❤️ Health Boost** - Gain 10 health points (capped at 100)
+
+#### **Market Disruption Events:**
+6. **🔥 Warehouse Fire** - Local warehouse burns down, causing supply shortage
+7. **🚔 Warehouse Raid** - Police raid local warehouse, disrupting supply
+
+### **Market Disruption Effects:**
+- **Price Multipliers**: 1.1x to 3.3x original price
+- **Affected Drugs**: 1-3 random drugs per event
+- **Duration**: Permanent until next price fluctuation
+- **City-Specific**: Only affects drugs in your current city
+
+### **Strategic Impact:**
+- **Risk Management**: Events can create both opportunities and threats
+- **Market Timing**: Plan your trades around potential disruptions
+- **City Selection**: Some cities may be more prone to certain events
+- **Financial Planning**: Unexpected costs and windfalls require adaptation
 
 ## Hospital System
 
