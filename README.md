@@ -163,7 +163,7 @@ The game features a comprehensive hospital system for health management:
 
 ## Recent Updates & Bug Fixes
 
-### **v2.0 - Hospital System & Bug Fixes**
+### **Hospital System & Bug Fixes**
 
 #### **New Features:**
 - 🏥 **Hospital System**: Complete healing system with dynamic pricing
