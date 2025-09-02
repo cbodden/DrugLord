@@ -263,6 +263,9 @@ next_day() {
         MONEY=0
     fi
 
+    # Banking system daily processing
+    process_banking_daily
+
     # Reduce police heat over time
     if [ ${POLICE_HEAT} -gt 0 ]
     then
@@ -274,5 +277,111 @@ next_day() {
     if [ ${HEALTH} -lt 0 ]
     then
         HEALTH=0
+    fi
+}
+
+# Banking system functions
+process_banking_daily() {
+    # Process savings interest
+    if [ ${SAVINGS} -gt 0 ]; then
+        local interest=$(echo "scale=0; ${SAVINGS} * ${SAVINGS_INTEREST_RATE} / 100" | bc -l)
+        SAVINGS=$((${SAVINGS} + ${interest}))
+        if [ ${interest} -gt 0 ]; then
+            green "💰 Savings interest: +\$${interest} (Total savings: \$${SAVINGS})"
+        fi
+    fi
+
+    # Process loan interest and payments
+    if [ ${LOAN_AMOUNT} -gt 0 ]; then
+        local loan_interest=$(echo "scale=0; ${LOAN_AMOUNT} * ${LOAN_INTEREST_RATE} / 100" | bc -l)
+        LOAN_AMOUNT=$((${LOAN_AMOUNT} + ${loan_interest}))
+        LOAN_DAYS_LEFT=$((${LOAN_DAYS_LEFT} - 1))
+        
+        red "💳 Loan interest: +\$${loan_interest} (Total loan: \$${LOAN_AMOUNT})"
+        
+        # Check if loan is overdue
+        if [ ${LOAN_DAYS_LEFT} -le 0 ]; then
+            red "⚠️ Your loan is overdue! Loan sharks are getting impatient..."
+            # Add to general debt if loan is overdue
+            DEBT=$((${DEBT} + ${LOAN_AMOUNT}))
+            LOAN_AMOUNT=0
+            LOAN_DAYS_LEFT=0
+        fi
+    fi
+}
+
+deposit_money() {
+    local amount=$1
+    
+    if [ ${MONEY} -lt ${amount} ]; then
+        red "Error: Insufficient funds! You only have \$${MONEY}"
+        return 1
+    fi
+    
+    MONEY=$((${MONEY} - ${amount}))
+    SAVINGS=$((${SAVINGS} + ${amount}))
+    green "💰 Deposited \$${amount} into savings account"
+    green "Total savings: \$${SAVINGS}"
+}
+
+withdraw_money() {
+    local amount=$1
+    
+    if [ ${SAVINGS} -lt ${amount} ]; then
+        red "Error: Insufficient savings! You only have \$${SAVINGS} in savings"
+        return 1
+    fi
+    
+    SAVINGS=$((${SAVINGS} - ${amount}))
+    MONEY=$((${MONEY} + ${amount}))
+    green "💰 Withdrew \$${amount} from savings account"
+    green "Remaining savings: \$${SAVINGS}"
+}
+
+take_loan() {
+    local amount=$1
+    local days=$2
+    
+    if [ ${LOAN_AMOUNT} -gt 0 ]; then
+        red "Error: You already have an outstanding loan of \$${LOAN_AMOUNT}!"
+        return 1
+    fi
+    
+    # Calculate total loan amount with interest
+    local total_interest=$(echo "scale=0; ${amount} * ${LOAN_INTEREST_RATE} * ${days} / 100" | bc -l)
+    local total_loan=$((${amount} + ${total_interest}))
+    
+    MONEY=$((${MONEY} + ${amount}))
+    LOAN_AMOUNT=${total_loan}
+    LOAN_DAYS_LEFT=${days}
+    
+    red "💳 Loan approved! Received \$${amount}"
+    red "Total amount due: \$${total_loan} (due in ${days} days)"
+    red "Daily interest rate: ${LOAN_INTEREST_RATE}%"
+}
+
+pay_loan() {
+    local amount=$1
+    
+    if [ ${LOAN_AMOUNT} -le 0 ]; then
+        red "Error: You don't have any outstanding loans!"
+        return 1
+    fi
+    
+    if [ ${MONEY} -lt ${amount} ]; then
+        red "Error: Insufficient funds! You only have \$${MONEY}"
+        return 1
+    fi
+    
+    MONEY=$((${MONEY} - ${amount}))
+    LOAN_AMOUNT=$((${LOAN_AMOUNT} - ${amount}))
+    
+    if [ ${LOAN_AMOUNT} -le 0 ]; then
+        green "🎉 Loan fully paid off! Congratulations!"
+        LOAN_AMOUNT=0
+        LOAN_DAYS_LEFT=0
+    else
+        green "💰 Paid \$${amount} towards loan"
+        green "Remaining loan balance: \$${LOAN_AMOUNT}"
     fi
 }

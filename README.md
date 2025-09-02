@@ -34,6 +34,7 @@ druglord/
 - Drug arrays (names, prices, volatility, inventory)
 - City system data (names, price multipliers, travel costs)
 - Travel cost volatility and base cost arrays
+- Banking system variables (savings, loans, interest rates)
 - Initial game state setup
 
 ### `game.sh`
@@ -41,6 +42,7 @@ druglord/
 - Price fluctuation algorithms (drugs and travel costs)
 - Travel cost fluctuation system with volatility
 - Police encounters and random events
+- Banking system with daily interest processing
 - Game over conditions and day progression
 
 ### `menus.sh`
@@ -49,6 +51,7 @@ druglord/
 - Sell drugs menu
 - Travel menu with city selection and fluctuating costs
 - Hospital menu with healing options and dynamic pricing
+- Banking menu with savings and loan management
 
 ### `save.sh`
 - Save game state to file with automatic backup creation
@@ -76,10 +79,11 @@ Run the game with:
 4. 💰 Sell Drugs
 5. ✈️ Travel to Another City
 6. 🏥 Hospital (Heal)
-7. ⏰ Next Day
-8. 💾 Save Game
-9. 📁 Load Game
-10. ❌ Quit
+7. 🏦 Bank (Savings & Loans)
+8. ⏰ Next Day
+9. 💾 Save Game
+10. 📁 Load Game
+11. ❌ Quit
 
 ## Benefits of Modular Structure
 
@@ -105,6 +109,7 @@ Run the game with:
 - 🎯 **Volatility-Based Travel Costs** (longer distances = higher volatility)
 - 🚔 **Police Encounters** and random events
 - 🏥 **Hospital System** with dynamic healing costs and emergency fees
+- 🏦 **Banking System** with savings accounts and loans with daily interest
 - 💾 **Enhanced Save/Load System** with backup and integrity validation
 - 🎨 **Colored Terminal Output** for enhanced visual experience
 - ✅ **Comprehensive Input Validation** and error handling
@@ -161,9 +166,65 @@ The game features a comprehensive hospital system for health management:
 - Health 30: Full treatment = $850 (includes emergency fee)
 - Health 10: Full treatment = $1,150 (includes emergency fee)
 
+## Banking System
+
+The game features a comprehensive banking system for financial management:
+
+### **Banking Services:**
+- **💰 Savings Account**: Earn 5% daily interest on deposits
+- **💳 Loan System**: Borrow money at 15% daily interest
+- **📊 Financial Tracking**: Monitor all banking activities
+- **⏰ Daily Processing**: Automatic interest calculation each day
+
+### **Savings Account:**
+- **Interest Rate**: 5% per day (compound interest)
+- **Deposit/Withdraw**: Full control over savings
+- **Example**: $1000 savings = $50 interest per day
+
+### **Loan System:**
+- **Interest Rate**: 15% per day (high risk)
+- **Flexible Terms**: Choose loan amount and repayment days
+- **Overdue Penalty**: Converts to general debt if not repaid
+- **Example**: $1000 loan = $150 interest per day
+
+### **Banking Menu Options:**
+1. **💰 Deposit Money** - Add cash to savings account
+2. **💸 Withdraw Money** - Remove money from savings
+3. **💳 Take Loan** - Borrow money with interest
+4. **💵 Pay Loan** - Make loan payments
+5. **📊 View Banking Details** - See all financial information
+6. **🚪 Leave Bank** - Exit banking menu
+
+### **Daily Banking Processing:**
+- **Savings Interest**: Automatically added each day
+- **Loan Interest**: Automatically compounded each day
+- **Overdue Loans**: Convert to general debt if not repaid
+- **Visual Feedback**: Shows interest earned/owed each day
+
+### **Strategic Considerations:**
+- **Risk vs Reward**: High loan interest vs steady savings growth
+- **Cash Flow Management**: Balance between cash, savings, and loans
+- **Timing**: Critical for loan repayment to avoid penalties
+- **Compound Growth**: Savings grow exponentially over time
+
 ## Recent Updates & Bug Fixes
 
-### **Hospital System & Bug Fixes**
+### **v2.1 - Banking System & Enhanced Features**
+
+#### **New Features:**
+- 🏦 **Banking System**: Complete financial management with savings and loans
+- 💰 **Savings Account**: 5% daily interest on deposits
+- 💳 **Loan System**: 15% daily interest borrowing with flexible terms
+- 📊 **Financial Tracking**: Comprehensive banking information display
+- ⏰ **Daily Processing**: Automatic interest calculation and loan management
+
+#### **Banking Features:**
+- **Savings Interest**: 5% daily compound interest
+- **Loan Management**: High-risk 15% daily interest loans
+- **Overdue Protection**: Automatic conversion to general debt
+- **Financial Planning**: Balance cash flow and investment strategies
+
+### **v2.0 - Hospital System & Bug Fixes**
 
 #### **New Features:**
 - 🏥 **Hospital System**: Complete healing system with dynamic pricing
@@ -187,6 +248,8 @@ The game features a comprehensive hospital system for health management:
 - Multiple save files
 - Guns for fights
 - Pockets / Bags for holding more (planned as a random event)
-- Bank system for loans and interest
+- ~~Bank system for loans and interest~~ ✅ **COMPLETED**
 - Reputation-based events and opportunities
+- Stock market system
+- Property investment system
 - .....And more

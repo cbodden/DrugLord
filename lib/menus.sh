@@ -9,10 +9,11 @@ show_menu() {
         "4. 💰 Sell Drugs" \
         "5. ✈️ Travel to Another City" \
         "6. 🏥 Hospital (Heal)" \
-        "7. ⏰ Next Day" \
-        "8. 💾 Save Game" \
-        "9. 📁 Load Game" \
-        "10. ❌ Quit" ""
+        "7. 🏦 Bank (Savings & Loans)" \
+        "8. ⏰ Next Day" \
+        "9. 💾 Save Game" \
+        "10. 📁 Load Game" \
+        "11. ❌ Quit" ""
 }
 
 buy_menu() {
@@ -332,6 +333,135 @@ hospital_menu() {
             ;;
         *)
             red "Error: Invalid choice! Please select 1-4."
+            ;;
+    esac
+}
+
+banking_menu() {
+    printf "%s\n" \
+        "$(bold "🏦 BANKING SERVICES:")" \
+        "$(dim "Current cash: \$${MONEY}")" \
+        "$(dim "Savings account: \$${SAVINGS}")" \
+        "$(dim "Outstanding loan: \$${LOAN_AMOUNT}")" \
+        "$(dim "Loan days remaining: ${LOAN_DAYS_LEFT}")" "" \
+        "$(bold "Banking Options:")" \
+        "1. 💰 Deposit Money (5% daily interest)" \
+        "2. 💸 Withdraw Money" \
+        "3. 💳 Take Loan (15% daily interest)" \
+        "4. 💵 Pay Loan" \
+        "5. 📊 View Banking Details" \
+        "6. 🚪 Leave Bank" ""
+
+    read -p "Choose option (1-6): " choice
+
+    # Validate input is a number
+    if ! [[ "$choice" =~ ^[0-9]+$ ]]; then
+        red "Error: Please enter a valid number!"
+        return
+    fi
+
+    case $choice in
+        1)
+            printf "%s\n" \
+                "$(bold "💰 DEPOSIT MONEY:")" \
+                "$(dim "Current cash: \$${MONEY}")" \
+                "$(dim "Current savings: \$${SAVINGS}")" \
+                "$(dim "Interest rate: ${SAVINGS_INTEREST_RATE}% per day")" ""
+            
+            read -p "How much to deposit? " amount
+            
+            if [[ "$amount" =~ ^[0-9]+$ ]] && [ "$amount" -gt 0 ]; then
+                deposit_money "$amount"
+            else
+                red "Error: Please enter a valid positive number!"
+            fi
+            ;;
+        2)
+            if [ ${SAVINGS} -eq 0 ]; then
+                red "Error: No money in savings account!"
+                return
+            fi
+            
+            printf "%s\n" \
+                "$(bold "💸 WITHDRAW MONEY:")" \
+                "$(dim "Current savings: \$${SAVINGS}")" \
+                "$(dim "Current cash: \$${MONEY}")" ""
+            
+            read -p "How much to withdraw? " amount
+            
+            if [[ "$amount" =~ ^[0-9]+$ ]] && [ "$amount" -gt 0 ]; then
+                withdraw_money "$amount"
+            else
+                red "Error: Please enter a valid positive number!"
+            fi
+            ;;
+        3)
+            if [ ${LOAN_AMOUNT} -gt 0 ]; then
+                red "Error: You already have an outstanding loan of \$${LOAN_AMOUNT}!"
+                return
+            fi
+            
+            printf "%s\n" \
+                "$(bold "💳 TAKE LOAN:")" \
+                "$(dim "Current cash: \$${MONEY}")" \
+                "$(dim "Interest rate: ${LOAN_INTEREST_RATE}% per day")" \
+                "$(red "⚠️ Warning: High interest rates!")" ""
+            
+            read -p "Loan amount? " amount
+            read -p "Days to repay? " days
+            
+            if [[ "$amount" =~ ^[0-9]+$ ]] && [ "$amount" -gt 0 ] && \
+               [[ "$days" =~ ^[0-9]+$ ]] && [ "$days" -gt 0 ]; then
+                take_loan "$amount" "$days"
+            else
+                red "Error: Please enter valid positive numbers!"
+            fi
+            ;;
+        4)
+            if [ ${LOAN_AMOUNT} -eq 0 ]; then
+                red "Error: No outstanding loans!"
+                return
+            fi
+            
+            printf "%s\n" \
+                "$(bold "💵 PAY LOAN:")" \
+                "$(dim "Outstanding loan: \$${LOAN_AMOUNT}")" \
+                "$(dim "Days remaining: ${LOAN_DAYS_LEFT}")" \
+                "$(dim "Current cash: \$${MONEY}")" ""
+            
+            read -p "How much to pay? " amount
+            
+            if [[ "$amount" =~ ^[0-9]+$ ]] && [ "$amount" -gt 0 ]; then
+                pay_loan "$amount"
+            else
+                red "Error: Please enter a valid positive number!"
+            fi
+            ;;
+        5)
+            printf "%s\n" \
+                "$(bold "📊 BANKING DETAILS:")" \
+                "$(dim "Current cash: \$${MONEY}")" \
+                "$(dim "Savings account: \$${SAVINGS}")" \
+                "$(dim "Savings interest rate: ${SAVINGS_INTEREST_RATE}% per day")" \
+                "$(dim "Outstanding loan: \$${LOAN_AMOUNT}")" \
+                "$(dim "Loan interest rate: ${LOAN_INTEREST_RATE}% per day")" \
+                "$(dim "Loan days remaining: ${LOAN_DAYS_LEFT}")" ""
+            
+            if [ ${SAVINGS} -gt 0 ]; then
+                local daily_interest=$(echo "scale=0; ${SAVINGS} * ${SAVINGS_INTEREST_RATE} / 100" | bc -l)
+                green "💰 Daily savings interest: \$${daily_interest}"
+            fi
+            
+            if [ ${LOAN_AMOUNT} -gt 0 ]; then
+                local daily_loan_interest=$(echo "scale=0; ${LOAN_AMOUNT} * ${LOAN_INTEREST_RATE} / 100" | bc -l)
+                red "💳 Daily loan interest: \$${daily_loan_interest}"
+            fi
+            ;;
+        6)
+            yellow "Leaving bank. Manage your finances wisely!"
+            ;;
+        *)
+            red "Error: Invalid choice! Please select 1-6."
             ;;
     esac
 }

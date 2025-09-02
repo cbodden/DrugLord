@@ -15,6 +15,11 @@ save_game() {
         echo "REPUTATION=${REPUTATION}"
         echo "POLICE_HEAT=${POLICE_HEAT}"
         echo "CURRENT_CITY=${CURRENT_CITY}"
+        echo "SAVINGS=${SAVINGS}"
+        echo "SAVINGS_INTEREST_RATE=${SAVINGS_INTEREST_RATE}"
+        echo "LOAN_AMOUNT=${LOAN_AMOUNT}"
+        echo "LOAN_INTEREST_RATE=${LOAN_INTEREST_RATE}"
+        echo "LOAN_DAYS_LEFT=${LOAN_DAYS_LEFT}"
         for drug in "${!drugs[@]}"; do
             echo "drugs[${drug}]=${drugs[${drug}]}"
         done

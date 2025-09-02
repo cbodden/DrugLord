@@ -41,6 +41,17 @@ print_stats() {
     echo "❤️ Health:      $(red "${HEALTH}")"
     echo "⭐ Reputation:  $(yellow "${REPUTATION}")"
     echo "🚔 Police Heat: $(red "${POLICE_HEAT}")"
+    
+    # Banking information
+    if [ ${SAVINGS} -gt 0 ] || [ ${LOAN_AMOUNT} -gt 0 ]; then
+        echo "🏦 Banking:"
+        if [ ${SAVINGS} -gt 0 ]; then
+            echo "  💰 Savings:     $(green "${SAVINGS}")"
+        fi
+        if [ ${LOAN_AMOUNT} -gt 0 ]; then
+            echo "  💳 Loan:        $(red "${LOAN_AMOUNT}") (${LOAN_DAYS_LEFT} days)"
+        fi
+    fi
     echo
 }
 

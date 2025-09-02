@@ -97,6 +97,13 @@ declare -A travel_cost_volatility=(
     ["denver"]="15"       # Medium volatility
 )
 
+# Banking system variables
+SAVINGS=0
+SAVINGS_INTEREST_RATE=5  # 5% daily interest
+LOAN_AMOUNT=0
+LOAN_INTEREST_RATE=15    # 15% daily interest
+LOAN_DAYS_LEFT=0
+
 # Initialize game state variables
 MONEY=1000
 DEBT=0
