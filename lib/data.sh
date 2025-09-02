@@ -2,6 +2,7 @@
 
 # Game data arrays
 declare -A drugs=(
+    ["ludes"]=0
     ["weed"]=0
     ["cocaine"]=0
     ["heroin"]=0
@@ -10,6 +11,7 @@ declare -A drugs=(
 )
 
 declare -A drug_prices=(
+    ["ludes"]=5
     ["weed"]=10
     ["cocaine"]=50
     ["heroin"]=80
@@ -18,14 +20,16 @@ declare -A drug_prices=(
 )
 
 declare -A drug_volatility=(
-    ["weed"]=5      # Low volatility
-    ["cocaine"]=15  # High volatility
-    ["heroin"]=20   # Very high volatility
-    ["meth"]=10     # Medium volatility
-    ["ecstasy"]=8   # Medium-low volatility
+    ["ludes"]=3      # Very low volatility (cheap and stable)
+    ["weed"]=5       # Low volatility
+    ["cocaine"]=15   # High volatility
+    ["heroin"]=20    # Very high volatility
+    ["meth"]=10      # Medium volatility
+    ["ecstasy"]=8    # Medium-low volatility
 )
 
 declare -A base_prices=(
+    ["ludes"]=5
     ["weed"]=10
     ["cocaine"]=50
     ["heroin"]=80
@@ -34,6 +38,7 @@ declare -A base_prices=(
 )
 
 declare -A drug_names=(
+    ["ludes"]="💊 Ludes"
     ["weed"]="🌿 Weed"
     ["cocaine"]="💎 Cocaine"
     ["heroin"]="💉 Heroin"

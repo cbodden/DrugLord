@@ -33,7 +33,7 @@ druglord/
 
 ### `data.sh`
 - Game state variables (MONEY, DEBT, DAY, etc.)
-- Drug arrays (names, prices, volatility, inventory)
+- Drug arrays (names, prices, volatility, inventory) - 6 drug types including ludes
 - City system data (names, price multipliers, travel costs)
 - Travel cost volatility and base cost arrays
 - Banking system variables (savings, loans, interest rates)
@@ -104,6 +104,7 @@ Run the game with:
 ## Features
 
 - 🏙️ **8 Major Cities** with different price multipliers
+- 💊 **6 Drug Types** with varying prices and volatility (Ludes, Weed, Cocaine, Heroin, Meth, Ecstasy)
 - ✈️ **Travel System** with fluctuating costs and price adjustments
 - 💹 **Dynamic Price Fluctuation** for both drugs and travel costs
 - 🎯 **Volatility-Based Travel Costs** (longer distances = higher volatility)
@@ -114,6 +115,30 @@ Run the game with:
 - 💾 **Enhanced Save/Load System** with backup and integrity validation
 - 🎨 **Colored Terminal Output** for enhanced visual experience
 - ✅ **Comprehensive Input Validation** and error handling
+
+## Drug Types & Pricing
+
+The game features 6 different drug types with varying prices, volatility, and market characteristics:
+
+### **Available Drugs:**
+1. **💊 Ludes** - $5 base price (cheapest, very stable)
+2. **🌿 Weed** - $10 base price (low volatility)
+3. **💊 Ecstasy** - $25 base price (medium-low volatility)
+4. **🧪 Meth** - $30 base price (medium volatility)
+5. **💎 Cocaine** - $50 base price (high volatility)
+6. **💉 Heroin** - $80 base price (very high volatility)
+
+### **Price Characteristics:**
+- **Ludes**: Cheapest drug in all cities ($4-$6 range)
+- **Volatility**: Ranges from 3 (ludes) to 20 (heroin)
+- **City Multipliers**: Prices adjust based on location
+- **Market Fluctuation**: All drugs experience price changes over time
+
+### **Strategic Considerations:**
+- **Low-Risk Trading**: Ludes and weed for steady, safe profits
+- **High-Risk Trading**: Heroin and cocaine for potential big gains
+- **Market Timing**: Volatile drugs require careful timing
+- **Inventory Management**: Balance between safe and risky investments
 
 ## Travel Cost Fluctuation System
 
