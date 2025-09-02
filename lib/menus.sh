@@ -3,15 +3,15 @@
 show_menu() {
     printf "%s\n" \
         "$(bold "🎮 MAIN MENU:")" \
-        "1. 📊 View Stats & Inventory" \
-        "2. 🏪 View Market Prices" \
-        "3. 🛒 Buy Drugs" \
-        "4. 💰 Sell Drugs" \
-        "5. ✈️ Travel to Another City" \
-        "6. 🏥 Hospital (Heal)" \
-        "7. 🏦 Bank (Savings & Loans)" \
-        "8. ⏰ Next Day" \
-        "9. 💾 Save Game" \
+        " 1. 📊 View Stats & Inventory" \
+        " 2. 🏪 View Market Prices" \
+        " 3. 🛒 Buy Drugs" \
+        " 4. 💰 Sell Drugs" \
+        " 5. ✈️ Travel to Another City" \
+        " 6. 🏥 Hospital (Heal)" \
+        " 7. 🏦 Bank (Savings & Loans)" \
+        " 8. ⏰ Next Day" \
+        " 9. 💾 Save Game" \
         "10. 📁 Load Game" \
         "11. ❌ Quit" ""
 }
