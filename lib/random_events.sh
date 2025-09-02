@@ -5,7 +5,7 @@
 
 # Main random event function
 random_event() {
-    local EVENT=$((RANDOM % 15))  # Increased to 15 for more events
+    local EVENT=$((RANDOM % 20))  # Increased to 20 for more events
 
     case ${EVENT} in
         0)
@@ -29,7 +29,10 @@ random_event() {
         6)
             warehouse_raid_event
             ;;
-        # Events 7-14: No event (53% chance of nothing happening)
+        7)
+            girlfriend_weed_event
+            ;;
+        # Events 8-19: No event (60% chance of nothing happening)
     esac
 }
 
@@ -161,4 +164,22 @@ warehouse_raid_event() {
         drug_prices[${drug}]=${new_price}
         red "📈 ${drug_names[${drug}]}: \$${current_price} → \$${new_price}"
     done
+}
+# Event 7: Girlfriend Weed Incident
+girlfriend_weed_event() {
+    # Only trigger if player has weed in inventory
+    if [ "${drugs[weed]}" -gt 0 ]; then
+        local weed_amount=${drugs[weed]}
+        drugs[weed]=0
+        
+        red "💔 Your girlfriend chopped up all your weed!"
+        red "Lost ${weed_amount} units of 🌿 Weed"
+        yellow "She said it was 'for your own good'..."
+        
+        # Add some reputation loss for being careless
+        REPUTATION=$((${REPUTATION} - 5))
+        if [ ${REPUTATION} -lt 0 ]; then
+            REPUTATION=0
+        fi
+    fi
 }

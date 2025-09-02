@@ -63,10 +63,11 @@ druglord/
 
 ### `random_events.sh`
 - Random events system that triggers when advancing to the next day
-- 7 different random events including warehouse fires and police raids
+- 8 different random events including warehouse fires, police raids, and personal drama
 - Price manipulation events that affect drug costs in current city
 - Financial events (found money, robbery, debt changes)
 - Health and reputation events
+- Personal events that affect inventory and relationships
 
 ### `utils.sh`
 - Screen clearing and header display
@@ -119,7 +120,7 @@ Run the game with:
 - 🚔 **Police Encounters** and random events
 - 🏥 **Hospital System** with dynamic healing costs and emergency fees
 - 🏦 **Banking System** with savings accounts and loans with daily interest
-- 🎲 **Random Events System** with 7 different events including warehouse incidents
+- 🎲 **Random Events System** with 8 different events including warehouse incidents and personal drama
 - 💾 **Enhanced Save/Load System** with backup and integrity validation
 - 🎨 **Colored Terminal Output** for enhanced visual experience
 - ✅ **Comprehensive Input Validation** and error handling
@@ -155,7 +156,7 @@ The game features a comprehensive random events system that adds unpredictabilit
 
 ### **Event Triggers:**
 - Events occur when you advance to the next day (option 8)
-- Each event has a ~7% chance of occurring (2 out of 15 possible outcomes)
+- Each event has a ~5% chance of occurring (1 out of 20 possible outcomes)
 - Events are city-specific and can dramatically affect local drug prices
 
 ### **Available Events:**
@@ -172,6 +173,9 @@ The game features a comprehensive random events system that adds unpredictabilit
 #### **Market Disruption Events:**
 6. **🔥 Warehouse Fire** - Local warehouse burns down, causing supply shortage
 7. **🚔 Warehouse Raid** - Police raid local warehouse, disrupting supply
+
+#### **Personal Events:**
+8. **💔 Girlfriend Weed Incident** - Your girlfriend destroys all your weed inventory
 
 ### **Market Disruption Effects:**
 - **Price Multipliers**: 1.1x to 3.3x original price
