@@ -5,10 +5,10 @@ show_menu() {
         "$(bold "🎮 MAIN MENU:")" \
         " 1. 📊 View Stats & Inventory" \
         " 2. 🏪 View Market Prices" \
-        " 3. 🛒 Buy Drugs" \
-        " 4. 💰 Sell Drugs" \
+        " 3. 🛒 $(red "[B]")uy Drugs" \
+        " 4. 💰 $(red "[S]")ell Drugs" \
         " 5. ✈️ Travel to Another City" \
-        " 6. 🏥 Hospital (Heal)" \
+        " 6. 🏥 $(red "[H]")ospital (Heal)" \
         " 7. 🏦 Bank (Savings & Loans)" \
         " 8. ⏰ Next Day" \
         " 9. 💾 Save Game" \

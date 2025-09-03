@@ -37,10 +37,10 @@ Run the game with:
 ### Main Menu Options:
 1. 📊 View Stats & Inventory
 2. 🏪 View Market Prices
-3. 🛒 Buy Drugs
-4. 💰 Sell Drugs
+3. 🛒 [B]uy Drugs (or press 'b')
+4. 💰 [S]ell Drugs (or press 's')
 5. ✈️ Travel to Another City
-6. 🏥 Hospital (Heal)
+6. 🏥 [H]ospital (Heal) (or press 'h')
 7. 🏦 Bank (Savings & Loans)
 8. ⏰ Next Day
 9. 💾 Save Game
