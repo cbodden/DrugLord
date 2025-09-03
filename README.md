@@ -7,78 +7,25 @@
 ![DrugLord](images/druglord.png)
 
 ## Overview
+
 This is an attempt to make a version reminiscent of the original DrugLord.exe
 that was written by Phil Erwin (FantasyWare Inc 1991-93).
 This version is written as a bash script trying to stick to only GNU coreutils.
 
-## File Structure
+## Features
 
-```
-druglord/
-├── druglord.sh              # Main game script
-├── README.md                 # This documentation
-├── CHANGELOG.md              # Version history and updates
-└── lib/                      # Library directory
-    ├── colors.sh             # Color functions and ANSI escape codes
-    ├── data.sh               # Game data arrays and initial state
-    ├── game.sh               # Core game mechanics and logic
-    ├── menus.sh              # All menu functions (buy, sell, travel)
-    ├── random_events.sh      # Random events system and event functions
-    ├── save.sh               # Save and load game functionality
-    └── utils.sh              # Utility functions and display functions
-```
-
-## Library Breakdown
-
-### `colors.sh`
-- All ANSI color functions (red, green, yellow, blue, etc.)
-- Bold and dim text formatting
-- Used throughout the game for visual appeal
-
-### `data.sh`
-- Game state variables (MONEY, DEBT, DAY, etc.)
-- Drug arrays (names, prices, volatility, inventory) - 6 drug types including ludes
-- City system data (names, price multipliers, travel costs)
-- Travel cost volatility and base cost arrays
-- Banking system variables (savings, loans, interest rates)
-- Initial game state setup
-
-### `game.sh`
-- Core game mechanics (buy_drug, sell_drug)
-- Price fluctuation algorithms (drugs and travel costs)
-- Travel cost fluctuation system with volatility
-- Police encounters and random events
-- Banking system with daily interest processing
-- Game over conditions and day progression
-
-### `menus.sh`
-- Main menu display
-- Buy drugs menu with price indicators and max purchase calculations
-- Sell drugs menu
-- Travel menu with city selection and fluctuating costs
-- Hospital menu with healing options and dynamic pricing
-- Banking menu with savings and loan management
-
-### `save.sh`
-- Save game state to file with automatic backup creation
-- Load game state from file with integrity validation
-- Handles all game variables and arrays (including travel cost data)
-- Automatic backup restoration on save failures
-
-### `random_events.sh`
-- Random events system that triggers when advancing to the next day
-- 10 different random events including warehouse fires, police raids, market floods, and personal drama
-- Price manipulation events that affect drug costs in current city (both increases and decreases)
-- Financial events (found money, robbery, debt changes)
-- Health and reputation events
-- Personal events that affect inventory and relationships
-- Conditional events based on player stats (reputation, inventory)
-
-### `utils.sh`
-- Screen clearing and header display
-- Stats and inventory display functions
-- City initialization and price calculations
-- Enhanced market price display with columnar format and trend indicators
+- 🏙️ **8 Major Cities** with different price multipliers
+- 💊 **6 Drug Types** with varying prices and volatility (Ludes, Weed, Cocaine, Heroin, Meth, Ecstasy)
+- ✈️ **Travel System** with fluctuating costs and price adjustments
+- 💹 **Dynamic Price Fluctuation** for both drugs and travel costs
+- 🎯 **Volatility-Based Travel Costs** (longer distances = higher volatility)
+- 🚔 **Police Encounters** and random events
+- 🏥 **Hospital System** with dynamic healing costs and emergency fees
+- 🏦 **Banking System** with savings accounts and loans with daily interest
+- 🎲 **Random Events System** with 10 different events including warehouse incidents, market floods, personal drama, and reputation-based encounters
+- 💾 **Enhanced Save/Load System** with backup and integrity validation
+- 🎨 **Colored Terminal Output** for enhanced visual experience
+- ✅ **Comprehensive Input Validation** and error handling
 
 ## Usage
 
@@ -99,27 +46,6 @@ Run the game with:
 9. 💾 Save Game
 10. 📁 Load Game
 11. ❌ Quit
-
-## Dependencies
-
-- `bash` - Shell interpreter
-- `bc` - Basic calculator for floating point math
-- Standard GNU coreutils (shuf, etc.)
-
-## Features
-
-- 🏙️ **8 Major Cities** with different price multipliers
-- 💊 **6 Drug Types** with varying prices and volatility (Ludes, Weed, Cocaine, Heroin, Meth, Ecstasy)
-- ✈️ **Travel System** with fluctuating costs and price adjustments
-- 💹 **Dynamic Price Fluctuation** for both drugs and travel costs
-- 🎯 **Volatility-Based Travel Costs** (longer distances = higher volatility)
-- 🚔 **Police Encounters** and random events
-- 🏥 **Hospital System** with dynamic healing costs and emergency fees
-- 🏦 **Banking System** with savings accounts and loans with daily interest
-- 🎲 **Random Events System** with 10 different events including warehouse incidents, market floods, personal drama, and reputation-based encounters
-- 💾 **Enhanced Save/Load System** with backup and integrity validation
-- 🎨 **Colored Terminal Output** for enhanced visual experience
-- ✅ **Comprehensive Input Validation** and error handling
 
 ## Drug Types & Pricing
 
@@ -292,6 +218,81 @@ The game features a comprehensive banking system for financial management:
 - **Cash Flow Management**: Balance between cash, savings, and loans
 - **Timing**: Critical for loan repayment to avoid penalties
 - **Compound Growth**: Savings grow exponentially over time
+
+## File Structure
+
+```
+druglord/
+├── druglord.sh              # Main game script
+├── README.md                 # This documentation
+├── CHANGELOG.md              # Version history and updates
+└── lib/                      # Library directory
+    ├── colors.sh             # Color functions and ANSI escape codes
+    ├── data.sh               # Game data arrays and initial state
+    ├── game.sh               # Core game mechanics and logic
+    ├── menus.sh              # All menu functions (buy, sell, travel)
+    ├── random_events.sh      # Random events system and event functions
+    ├── save.sh               # Save and load game functionality
+    └── utils.sh              # Utility functions and display functions
+```
+
+## Library Breakdown
+
+### `colors.sh`
+- All ANSI color functions (red, green, yellow, blue, etc.)
+- Bold and dim text formatting
+- Used throughout the game for visual appeal
+
+### `data.sh`
+- Game state variables (MONEY, DEBT, DAY, etc.)
+- Drug arrays (names, prices, volatility, inventory) - 6 drug types including ludes
+- City system data (names, price multipliers, travel costs)
+- Travel cost volatility and base cost arrays
+- Banking system variables (savings, loans, interest rates)
+- Initial game state setup
+
+### `game.sh`
+- Core game mechanics (buy_drug, sell_drug)
+- Price fluctuation algorithms (drugs and travel costs)
+- Travel cost fluctuation system with volatility
+- Police encounters and random events
+- Banking system with daily interest processing
+- Game over conditions and day progression
+
+### `menus.sh`
+- Main menu display
+- Buy drugs menu with price indicators and max purchase calculations
+- Sell drugs menu
+- Travel menu with city selection and fluctuating costs
+- Hospital menu with healing options and dynamic pricing
+- Banking menu with savings and loan management
+
+### `save.sh`
+- Save game state to file with automatic backup creation
+- Load game state from file with integrity validation
+- Handles all game variables and arrays (including travel cost data)
+- Automatic backup restoration on save failures
+
+### `random_events.sh`
+- Random events system that triggers when advancing to the next day
+- 10 different random events including warehouse fires, police raids, market floods, and personal drama
+- Price manipulation events that affect drug costs in current city (both increases and decreases)
+- Financial events (found money, robbery, debt changes)
+- Health and reputation events
+- Personal events that affect inventory and relationships
+- Conditional events based on player stats (reputation, inventory)
+
+### `utils.sh`
+- Screen clearing and header display
+- Stats and inventory display functions
+- City initialization and price calculations
+- Enhanced market price display with columnar format and trend indicators
+
+## Dependencies
+
+- `bash` - Shell interpreter
+- `bc` - Basic calculator for floating point math
+- Standard GNU coreutils (shuf, etc.)
 
 ## Version History
 
