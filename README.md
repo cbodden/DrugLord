@@ -37,7 +37,7 @@ Run the game with:
 ### Main Menu Options:
 1. 📊 View Stats & Inventory
 2. 🏪 View Market Prices
-3. 🛒 [B]uy Drugs (or press 'b')
+3. 🛒 [B]uy Drugs (or press 'b') - Green letter shortcuts
 4. 💰 [S]ell Drugs (or press 's')
 5. ✈️ [T]ravel to Another City (or press 't')
 6. 🏥 [H]ospital (Heal) (or press 'h')
