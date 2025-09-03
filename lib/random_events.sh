@@ -35,7 +35,10 @@ random_event() {
         8)
             snitch_event
             ;;
-        # Events 9-19: No event (55% chance of nothing happening)
+        9)
+            market_flooded_event
+            ;;
+        # Events 10-19: No event (50% chance of nothing happening)
     esac
 }
 
@@ -296,4 +299,53 @@ snitch_event() {
         echo
         read -p "Press Enter to continue..."
     fi
+}
+
+# Event 9: Market Flooded Event
+market_flooded_event() {
+    local city_name="${cities[${CURRENT_CITY}]}"
+    green "🚢 A ship came in and now the market is flooded with drugs!"
+    yellow "Supply glut causes drug prices to plummet in ${city_name}!"
+    
+    # Select 1-4 random drugs to decrease in price
+    local num_drugs=$((RANDOM % 4 + 1))
+    local affected_drugs=()
+    
+    # Get list of available drugs
+    local drug_list=($(printf '%s\n' "${!drug_prices[@]}"))
+    
+    # Select random drugs
+    for ((i=0; i<num_drugs; i++)); do
+        local random_index=$((RANDOM % ${#drug_list[@]}))
+        local selected_drug="${drug_list[${random_index}]}"
+        
+        # Avoid duplicates
+        if [[ ! " ${affected_drugs[@]} " =~ " ${selected_drug} " ]]; then
+            affected_drugs+=("${selected_drug}")
+        fi
+    done
+    
+    # Apply price decreases
+    for drug in "${affected_drugs[@]}"; do
+        local current_price=${drug_prices[${drug}]}
+        local multiplier=$(echo "scale=2; $((${RANDOM} % 51 + 25)) / 100" | bc -l)  # 0.25 to 0.75
+        local new_price=$(echo "scale=0; ${current_price} * ${multiplier}" | bc -l)
+        new_price=${new_price%.*}  # Remove decimal
+        
+        # Ensure minimum price of $1
+        if [ ${new_price} -lt 1 ]; then
+            new_price=1
+        fi
+        
+        # Ensure price actually decreased
+        if [ ${new_price} -ge ${current_price} ]; then
+            new_price=$((${current_price} - 1))
+            if [ ${new_price} -lt 1 ]; then
+                new_price=1
+            fi
+        fi
+        
+        drug_prices[${drug}]=${new_price}
+        green "📉 ${drug_names[${drug}]}: \$${current_price} → \$${new_price}"
+    done
 }
