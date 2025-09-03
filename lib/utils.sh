@@ -64,7 +64,8 @@ print_inventory() {
     echo "$(bold "🎒 INVENTORY:")"
     for drug in "${!drugs[@]}"; do
         if [ "${drugs[$drug]}" -gt 0 ]; then
-            echo "  ${drug_names[$drug]}: $(green "${drugs[$drug]}") units"
+            printf "%-1s %-15s %-25s\n" \
+                "" "${drug_names[$drug]}: " "$(green "${drugs[$drug]}") units"
         fi
     done
     echo

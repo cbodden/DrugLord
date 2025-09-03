@@ -245,16 +245,16 @@ hospital_menu() {
     local base_cost=50
     local cost_per_point=10
     local emergency_fee=0
-    
+
     # Add emergency fee for critical health
     if [ ${HEALTH} -lt 20 ]; then
         emergency_fee=200
     elif [ ${HEALTH} -lt 50 ]; then
         emergency_fee=100
     fi
-    
+
     local total_cost=$((base_cost + (health_deficit * cost_per_point) + emergency_fee))
-    
+
     printf "%s\n" \
         "$(bold "🏥 HOSPITAL - EMERGENCY CARE:")" \
         "$(dim "Current health: ${HEALTH}/100")" \
@@ -269,7 +269,7 @@ hospital_menu() {
     local full_cost=${total_cost}
     local partial_cost=$((total_cost / 4))
     local basic_cost=$((total_cost / 10))
-    
+
     # Ensure minimum costs
     if [ ${partial_cost} -lt 25 ]; then
         partial_cost=25
@@ -375,9 +375,9 @@ banking_menu() {
                 "$(dim "Current cash: \$${MONEY}")" \
                 "$(dim "Current savings: \$${SAVINGS}")" \
                 "$(dim "Interest rate: ${SAVINGS_INTEREST_RATE}% per day")" ""
-            
+
             read -p "How much to deposit? " amount
-            
+
             if [[ "$amount" =~ ^[0-9]+$ ]] && [ "$amount" -gt 0 ]; then
                 if [ "$amount" -gt 100000 ]; then
                     red "Error: Maximum deposit amount is \$100,000!"
@@ -393,14 +393,14 @@ banking_menu() {
                 red "Error: No money in savings account!"
                 return
             fi
-            
+
             printf "%s\n" \
                 "$(bold "💸 WITHDRAW MONEY:")" \
                 "$(dim "Current savings: \$${SAVINGS}")" \
                 "$(dim "Current cash: \$${MONEY}")" ""
-            
+
             read -p "How much to withdraw? " amount
-            
+
             if [[ "$amount" =~ ^[0-9]+$ ]] && [ "$amount" -gt 0 ]; then
                 if [ "$amount" -gt 100000 ]; then
                     red "Error: Maximum withdrawal amount is \$100,000!"
@@ -416,16 +416,16 @@ banking_menu() {
                 red "Error: You already have an outstanding loan of \$${LOAN_AMOUNT}!"
                 return
             fi
-            
+
             printf "%s\n" \
                 "$(bold "💳 TAKE LOAN:")" \
                 "$(dim "Current cash: \$${MONEY}")" \
                 "$(dim "Interest rate: ${LOAN_INTEREST_RATE}% per day")" \
                 "$(red "⚠️ Warning: High interest rates!")" ""
-            
+
             read -p "Loan amount? " amount
             read -p "Days to repay? " days
-            
+
             if [[ "$amount" =~ ^[0-9]+$ ]] && [ "$amount" -gt 0 ] && \
                [[ "$days" =~ ^[0-9]+$ ]] && [ "$days" -gt 0 ]; then
                 if [ "$amount" -gt 50000 ]; then
@@ -444,15 +444,15 @@ banking_menu() {
                 red "Error: No outstanding loans!"
                 return
             fi
-            
+
             printf "%s\n" \
                 "$(bold "💵 PAY LOAN:")" \
                 "$(dim "Outstanding loan: \$${LOAN_AMOUNT}")" \
                 "$(dim "Days remaining: ${LOAN_DAYS_LEFT}")" \
                 "$(dim "Current cash: \$${MONEY}")" ""
-            
+
             read -p "How much to pay? " amount
-            
+
             if [[ "$amount" =~ ^[0-9]+$ ]] && [ "$amount" -gt 0 ]; then
                 if [ "$amount" -gt 100000 ]; then
                     red "Error: Maximum payment amount is \$100,000!"
@@ -472,12 +472,12 @@ banking_menu() {
                 "$(dim "Outstanding loan: \$${LOAN_AMOUNT}")" \
                 "$(dim "Loan interest rate: ${LOAN_INTEREST_RATE}% per day")" \
                 "$(dim "Loan days remaining: ${LOAN_DAYS_LEFT}")" ""
-            
+
             if [ ${SAVINGS} -gt 0 ]; then
                 local daily_interest=$(echo "scale=0; ${SAVINGS} * ${SAVINGS_INTEREST_RATE} / 100" | bc -l)
                 green "💰 Daily savings interest: \$${daily_interest}"
             fi
-            
+
             if [ ${LOAN_AMOUNT} -gt 0 ]; then
                 local daily_loan_interest=$(echo "scale=0; ${LOAN_AMOUNT} * ${LOAN_INTEREST_RATE} / 100" | bc -l)
                 red "💳 Daily loan interest: \$${daily_loan_interest}"
