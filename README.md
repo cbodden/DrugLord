@@ -1,5 +1,9 @@
 # DrugLord.sh
 
+![Unsupported](https://img.shields.io/badge/development_status-in_progress-green.svg)
+[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
+![Unsupported](https://img.shields.io/badge/IRC_Libera-#druglord-yellow)
+
 ![DrugLord](images/druglord.png)
 
 ## Overview
