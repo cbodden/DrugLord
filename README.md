@@ -2,7 +2,11 @@
 
 ![Unsupported](https://img.shields.io/badge/development_status-in_progress-blue.svg)
 [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
+<<<<<<< HEAD
 ![Unsupported](https://img.shields.io/badge/IRC_Libera-druglord-blue)
+=======
+![Unsupported](https://img.shields.io/badge/IRC_Libera-\#druglord-yellow)
+>>>>>>> bfe45f6 (changes:)
 
 ![DrugLord](images/druglord.png)
 
