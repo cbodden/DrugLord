@@ -39,7 +39,7 @@ Run the game with:
 2. 🏪 View Market Prices
 3. 🛒 [B]uy Drugs (or press 'b')
 4. 💰 [S]ell Drugs (or press 's')
-5. ✈️ Travel to Another City
+5. ✈️ [T]ravel to Another City (or press 't')
 6. 🏥 [H]ospital (Heal) (or press 'h')
 7. 🏦 Bank (Savings & Loans)
 8. ⏰ Next Day

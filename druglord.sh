@@ -35,20 +35,22 @@ main() {
         print_inventory
         show_menu
 
-        read -p "Choose option (1-11, b for Buy, s for Sell, h for Hospital): " choice
+        read -p "Choose option (1-11, b for Buy, s for Sell, t for Travel, h for Hospital): " choice
 
         # Handle letter navigation
         if [[ "$choice" =~ ^[bB]$ ]]; then
             choice="3"  # Map 'b' to option 3 (Buy Drugs)
         elif [[ "$choice" =~ ^[sS]$ ]]; then
             choice="4"  # Map 's' to option 4 (Sell Drugs)
+        elif [[ "$choice" =~ ^[tT]$ ]]; then
+            choice="5"  # Map 't' to option 5 (Travel)
         elif [[ "$choice" =~ ^[hH]$ ]]; then
             choice="6"  # Map 'h' to option 6 (Hospital)
         fi
 
         # Validate input is a number
         if ! [[ "$choice" =~ ^[0-9]+$ ]]; then
-            red "Error: Please enter a valid number between 1-11, 'b' for Buy, 's' for Sell, or 'h' for Hospital!"
+            red "Error: Please enter a valid number between 1-11, 'b' for Buy, 's' for Sell, 't' for Travel, or 'h' for Hospital!"
             read -p "Press Enter to continue..."
             continue
         fi

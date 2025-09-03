@@ -7,7 +7,7 @@ show_menu() {
         " 2. 🏪 View Market Prices" \
         " 3. 🛒 $(red "[B]")uy Drugs" \
         " 4. 💰 $(red "[S]")ell Drugs" \
-        " 5. ✈️ Travel to Another City" \
+        " 5. ✈️ $(red "[T]")ravel to Another City" \
         " 6. 🏥 $(red "[H]")ospital (Heal)" \
         " 7. 🏦 Bank (Savings & Loans)" \
         " 8. ⏰ Next Day" \
