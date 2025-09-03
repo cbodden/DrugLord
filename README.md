@@ -53,7 +53,7 @@ druglord/
 
 ### `menus.sh`
 - Main menu display
-- Buy drugs menu with price indicators
+- Buy drugs menu with price indicators and max purchase calculations
 - Sell drugs menu
 - Travel menu with city selection and fluctuating costs
 - Hospital menu with healing options and dynamic pricing

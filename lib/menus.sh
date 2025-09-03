@@ -66,7 +66,15 @@ buy_menu() {
 
     if [ "${choice}" -ge 1 ] && [ "${choice}" -lt ${i} ]; then
         local SELECTED_DRUG=${drug_list[$((choice - 1))]}
-        read -p "How many units? " quantity
+        local DRUG_PRICE=${drug_prices[${SELECTED_DRUG}]}
+        local MAX_UNITS=$((MONEY / DRUG_PRICE))
+        
+        # Ensure max units doesn't exceed game limit
+        if [ ${MAX_UNITS} -gt 1000 ]; then
+            MAX_UNITS=1000
+        fi
+        
+        read -p "How many units (Max: ${MAX_UNITS}): " quantity
 
         if [[ "${quantity}" =~ ^[0-9]+$ ]] && [ "${quantity}" -gt 0 ]; then
             if [ "${quantity}" -gt 1000 ]; then
